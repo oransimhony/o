@@ -38,13 +38,13 @@ class OParser(Parser):
     def statement(self, p):
         return p.var_define
 
-    @_('LET ID ASSIGN expr')
+    @_('LET var ASSIGN expr')
     def var_define(self, p):
-        return ('var_define', p.ID, p.expr)
+        return ('var_define', p.var, p.expr)
 
-    @_('LET ID SEP')
+    @_('LET var SEP')
     def statement(self, p):
-        return ('var_define', p.ID, None)
+        return ('var_define', p.var, None)
 
     @_('var_assign SEP')
     def statement(self, p):
@@ -54,9 +54,9 @@ class OParser(Parser):
     def statement(self, p):
         return ('return', p.expr)
 
-    @_('ID ASSIGN expr')
+    @_('var ASSIGN expr')
     def var_assign(self, p):
-        return ('var_assign', p.ID, p.expr)
+        return ('var_assign', p.var, p.expr)
 
     @_('PRINT expr SEP')
     def statement(self, p):
@@ -154,9 +154,41 @@ class OParser(Parser):
     def expr(self, p):
         return p.STRING
 
-    @_('ID')
+    @_('list_val')
     def expr(self, p):
-        return ('var', p.ID)
+        return p.list_val
+
+    @_('"[" exprs "]"')
+    def list_val(self, p):
+        return p.exprs
+
+    @_('empty')
+    def exprs(self, p):
+        return []
+
+    @_('expr')
+    def exprs(self, p):
+        return [p.expr]
+
+    @_('exprs "," expr')
+    def exprs(self, p):
+        return p.exprs + [p.expr]
+        
+    @_('var "[" INT "]"')
+    def expr(self, p):
+        return ('indexing', ('var', p.var), p.INT)
+
+    @_('var')
+    def expr(self, p):
+        return ('var', p.var)
+
+    @_('ID')
+    def var(self, p):
+        return p.ID
+
+    @_('var "[" INT "]"')
+    def var(self, p):
+        return ('indexing', ('var', p.var), p.INT)
 
     @_('NIL')
     def expr(self, p):

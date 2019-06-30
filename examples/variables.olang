@@ -1,8 +1,14 @@
 let a = 5;
 let b = a + 2.5;
-print a; 
+print a;
 print b;
 print a * b;
 let str = "Hello";
 str = str + " World!";
 print str;
+let list = [0, 1, 2];
+print list[0];
+print list[1];
+print list[2];
+list[0] = list[0] + list[1] + list[2];
+print list[0];

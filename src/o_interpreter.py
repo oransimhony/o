@@ -92,20 +92,27 @@ class Process:
                 return result
 
             elif action == 'var_define':
-                if parsed[1] in self.env:
-                    print('Cannot redefine variable \'%s\'' % parsed[1])
+                name = parsed[1]
+                if name in self.env:
+                    print('Cannot redefine variable \'%s\'' % name)
                     return None
                 result = self.evaluate(parsed[2])
-                self.env.update({parsed[1]: result})
+                self.env.update({name: result})
                 return None
             elif action == 'var_assign':
-                if parsed[1] not in self.env:
-                    print('Cannot assign to undefined variable \'%s\'' %
-                          parsed[1])
+                if type(parsed[1]) is not tuple:
+                    if parsed[1] not in self.env:
+                        print('Cannot assign to undefined variable \'%s\'' %
+                            parsed[1])
+                        return None
+                    result = self.evaluate(parsed[2])
+                    self.env.update({parsed[1]: result})
                     return None
-                result = self.evaluate(parsed[2])
-                self.env.update({parsed[1]: result})
-                return None
+                else:
+                    var = self.evaluate(parsed[1][1])
+                    index = self.evaluate(parsed[1][2])
+                    value = self.evaluate(parsed[2])
+                    var[index] = value
             elif action == 'if':
                 cond = self.evaluate(parsed[1])
                 if cond:
@@ -123,6 +130,13 @@ class Process:
                 return self.run(parsed[1])
             elif action == 'var':
                 return self.env.find(parsed[1])
+            elif action == 'indexing':
+                var = self.evaluate(parsed[1])
+                index = self.evaluate(parsed[2])
+                if index > len(var):
+                    console.log('index out of bounds error')
+                    return None
+                return var[index]
             elif action == '+':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])

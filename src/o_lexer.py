@@ -7,7 +7,7 @@ class OLexer(Lexer):
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
-    literals = {'=', '+', '-', '/', '*', '(', ')', ',', '{', '}', '%'}
+    literals = {'=', '+', '-', '/', '*', '(', ')', ',', '{', '}', '%', '[', ']'}
 
     LET = r'let'
     PRINT = r'print'
