@@ -13,7 +13,7 @@ class OLexer(Lexer):
     literals = {'=', '+', '-', '/', '*',
                 '(', ')', ',', '{', '}',
                 '%', '[', ']', '!', '&',
-                '|', '^'}
+                '|', '^', '?', ':'}
 
     LET = r'let'
     PRINT = r'print'
@@ -53,7 +53,7 @@ class OLexer(Lexer):
         t.value = int(t.value)
         return t
 
-    @_(r'\".*\"')
+    @_(r'\".*?(?<!\\)(\\\\)*\"')
     def STRING(self, t):
         t.value = t.value[1:-1]
         return t

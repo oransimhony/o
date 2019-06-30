@@ -85,6 +85,10 @@ class OParser(Parser):
     def statement(self, p):
         return (p.var_assign0, ('while', ('condition', p.expr), ('block', p.block + (p.var_assign1, ))))
 
+    @_('expr "?" expr ":" expr')
+    def expr(self, p):
+        return ('?:', p.expr0, p.expr1, p.expr2)
+
     @_('ID "(" args ")"')
     def expr(self, p):
         return ('call', p.ID, ('args', p.args))

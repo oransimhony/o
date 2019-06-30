@@ -239,6 +239,11 @@ class Process:
                 if result == True:
                     return False
                 return True
+            elif action == '?:':
+                cond = self.evaluate(parsed[1])
+                if cond:
+                    return self.evaluate(parsed[2])
+                return self.evaluate(parsed[3])
             else:
                 if len(parsed) > 0 and type(parsed[0]) == tuple:
                     return self.run(parsed)
