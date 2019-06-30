@@ -36,6 +36,9 @@ pip install sly
 * If Statements
 * While Loops
 * For Loops
+* Functions
+* Anonymous Functions
+* Closures
 
 ## Built With
 
