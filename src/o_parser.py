@@ -3,7 +3,7 @@ from o_lexer import OLexer
 
 
 class OParser(Parser):
-    debugfile = 'parser.out'
+    # debugfile = 'parser.out'
     tokens = OLexer.tokens
 
     precedence = (
@@ -33,6 +33,10 @@ class OParser(Parser):
     def statement(self, p):
         return ('var_define', p.ID, p.expr)
 
+    @_('LET ID SEP')
+    def statement(self, p):
+        return ('var_define', p.ID, None)
+
     @_('ID ASSIGN expr SEP')
     def statement(self, p):
         return ('var_assign', p.ID, p.expr)
@@ -43,11 +47,15 @@ class OParser(Parser):
 
     @_('IF expr block ELSE block')
     def statement(self, p):
-        return ('if', ('condition', p.expr), ('thenBody', p.block0), ('elseBody', p.block1))
+        return ('if', ('condition', p.expr), ('block', p.block0), ('block', p.block1))
 
     @_('IF expr block')
     def statement(self, p):
-        return ('if', ('condition', p.expr), ('thenBody', p.block0), ('elseBody', None))
+        return ('if', ('condition', p.expr), ('block', p.block0), ('block', None))
+
+    @_('WHILE expr block')
+    def statement(self, p):
+        return ('while', ('condition', p.expr), ('block', p.block))
 
     @_('expr logical expr')
     def expr(self, p):
@@ -116,6 +124,10 @@ class OParser(Parser):
     @_('ID')
     def expr(self, p):
         return ('var', p.ID)
+
+    @_('NIL')
+    def expr(self, p):
+        return None
 
     @_('')
     def empty(self, p):

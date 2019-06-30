@@ -13,6 +13,12 @@ class Process:
       for line in tree:
         self.evaluate(line)
 
+
+  def stringify(self, expr):
+    if expr is None:
+        return "nil"
+    return str(expr)
+
   def evaluate(self, parsed):
     # print("PARSED:", parsed)
     if type(parsed) != tuple:
@@ -23,7 +29,7 @@ class Process:
 
         if action == 'print':
             result = self.evaluate(parsed[1])
-            print(result)
+            print(self.stringify(result))
             return None
         elif action == 'var_define':
             if parsed[1] in self.env:
@@ -42,15 +48,18 @@ class Process:
         elif action == 'if':
             # print(parsed)
             # print(parsed[3])
-            result = self.evaluate(parsed[1])
-            if result:
+            cond = self.evaluate(parsed[1])
+            if cond:
                 return self.evaluate(parsed[2])
             return self.evaluate(parsed[3])
+        elif action == 'while':
+            cond = self.evaluate(parsed[1])
+            while cond:
+              self.evaluate(parsed[2])
+              cond = self.evaluate(parsed[1])
         elif action == 'condition':
             return self.evaluate(parsed[1])
-        elif action == 'thenBody':
-            return self.run(parsed[1])
-        elif action == 'elseBody':
+        elif action == 'block':
             return self.run(parsed[1])
         elif action == 'var':
             if parsed[1] in self.env:

@@ -3,7 +3,7 @@ from sly import Lexer
 
 class OLexer(Lexer):
     tokens = {ID, NUMBER, ASSIGN, STRING, LET,
-              PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ}
+              PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ, NIL, WHILE}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -13,6 +13,8 @@ class OLexer(Lexer):
     PRINT = r'print'
     IF = r'if'
     ELSE = r'else'
+    NIL = r'nil'
+    WHILE = r'while'
     LESS = r'<'
     GREATER = r'>'
     LESSEQ = r'<='
@@ -39,5 +41,5 @@ class OLexer(Lexer):
         self.lineno += len(t.value)
 
     def error(self, t):
-      print("Illegal character '%s' on line %d" % (t.value[0], self.lineno))
-      self.index += 1
+        print("Illegal character '%s' on line %d" % (t.value[0], self.lineno))
+        self.index += 1
