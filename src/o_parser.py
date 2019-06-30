@@ -9,6 +9,7 @@ class OParser(Parser):
     precedence = (
         ('left', EQEQ, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ),
         ('left', '+', '-'),
+        ('left', '%'),
         ('left', '*', '/'),
         ('right', 'UMINUS')
     )
@@ -59,7 +60,7 @@ class OParser(Parser):
 
     @_('IF expr block')
     def statement(self, p):
-        return ('if', ('condition', p.expr), ('block', p.block0), ('block', None))
+        return ('if', ('condition', p.expr), ('block', p.block), None)
 
     @_('WHILE expr block')
     def statement(self, p):
@@ -120,6 +121,10 @@ class OParser(Parser):
     @_('expr "/" expr')
     def expr(self, p):
         return ('/', p.expr0, p.expr1)
+
+    @_('expr "%" expr')
+    def expr(self, p):
+        return ('%', p.expr0, p.expr1)
 
     @_('"(" expr ")"')
     def expr(self, p):

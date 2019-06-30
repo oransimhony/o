@@ -52,7 +52,8 @@ class Process:
             cond = self.evaluate(parsed[1])
             if cond:
                 return self.evaluate(parsed[2])
-            return self.evaluate(parsed[3])
+            if parsed[3] is not None:
+                return self.evaluate(parsed[3])
         elif action == 'while':
             cond = self.evaluate(parsed[1])
             while cond:
@@ -84,6 +85,10 @@ class Process:
             result = self.evaluate(parsed[1])
             result2 = self.evaluate(parsed[2])
             return int(result / result2)
+        elif action == '%':
+            result = self.evaluate(parsed[1])
+            result2 = self.evaluate(parsed[2])
+            return result % result2
         elif action == '==':
             result = self.evaluate(parsed[1])
             result2 = self.evaluate(parsed[2])
