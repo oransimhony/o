@@ -2,7 +2,7 @@ from sly import Lexer
 
 
 class OLexer(Lexer):
-    tokens = {ID, NUMBER, ASSIGN, STRING, LET,
+    tokens = {ID, INT, FLOAT, ASSIGN, STRING, LET,
               PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ, NIL, WHILE, FOR, FN, RETURN, LAMBDA, ARROW}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
@@ -31,8 +31,13 @@ class OLexer(Lexer):
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
 
+    @_(r'\d+\.\d+')
+    def FLOAT(self, t):
+        t.value = float(t.value)
+        return t
+
     @_(r'\d+')
-    def NUMBER(self, t):
+    def INT(self, t):
         t.value = int(t.value)
         return t
 

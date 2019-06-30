@@ -32,7 +32,7 @@ pip install sly
 ## Currently Supporting
 
 * Mathemtical Experssions ( + - * / % )
-* Variables
+* Variables (Ints, Floats, Strings)
 * If Statements
 * While Loops
 * For Loops

@@ -14,10 +14,6 @@ class OParser(Parser):
         ('right', 'UMINUS')
     )
 
-    # @_('NUMBER statement')
-    # def line(self, p):
-    #   return (p.NUMBER, p.statement)
-
     @_('program statement')
     def program(self, p):
         return p.program + (p.statement, )
@@ -146,9 +142,13 @@ class OParser(Parser):
     def expr(self, p):
         return p.expr
 
-    @_('NUMBER')
+    @_('INT')
     def expr(self, p):
-        return p.NUMBER
+        return p.INT
+
+    @_('FLOAT')
+    def expr(self, p):
+        return p.FLOAT
 
     @_('STRING')
     def expr(self, p):
