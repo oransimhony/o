@@ -5,7 +5,8 @@ class OLexer(Lexer):
     tokens = {ID, INT, FLOAT, ASSIGN, STRING, LET,
               PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS,
               GREATER, LESSEQ, GREATEREQ, NIL, WHILE,
-              FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE}
+              FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE,
+              AND, OR}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -25,6 +26,8 @@ class OLexer(Lexer):
     LAMBDA = r'lambda'
     TRUE = r'true'
     FALSE = r'false'
+    AND = r'and'
+    OR = r'or'
     ARROW = r'=>'
     LESSEQ = r'<='
     GREATEREQ = r'>='

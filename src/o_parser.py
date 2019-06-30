@@ -7,11 +7,14 @@ class OParser(Parser):
     tokens = OLexer.tokens
 
     precedence = (
-        ('left', EQEQ, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ),
+        ('left', OR),
+        ('left', AND),
+        ('left', EQEQ, NOTEQ),
+        ('left', LESS, LESSEQ, GREATER, GREATEREQ),
         ('left', '+', '-'),
-        ('left', '%'),
-        ('left', '*', '/'),
-        ('right', 'UMINUS', 'NOT')
+        ('left', '*', '/', '%'),
+        ('right', 'UMINUS'),
+        ('right', '!'),
     )
 
     @_('program statement')
@@ -82,33 +85,37 @@ class OParser(Parser):
     def expr(self, p):
         return ('call', p.ID, ('args', p.args))
 
-    @_('expr logical expr')
+    @_('expr EQEQ expr')
     def expr(self, p):
-        return (p.logical, p.expr0, p.expr1)
+        return ('==', p.expr0, p.expr1)
 
-    @_('EQEQ')
-    def logical(self, p):
-        return '=='
+    @_('expr NOTEQ expr')
+    def expr(self, p):
+        return ('!=', p.expr0, p.expr1)
 
-    @_('NOTEQ')
-    def logical(self, p):
-        return '!='
+    @_('expr LESSEQ expr')
+    def expr(self, p):
+        return ('<=', p.expr0, p.expr1)
 
-    @_('LESS')
-    def logical(self, p):
-        return '<'
+    @_('expr GREATEREQ expr')
+    def expr(self, p):
+        return ('>=', p.expr0, p.expr1)
 
-    @_('GREATER')
-    def logical(self, p):
-        return '>'
+    @_('expr AND expr')
+    def expr(self, p):
+        return ('and', p.expr0, p.expr1)
 
-    @_('LESSEQ')
-    def logical(self, p):
-        return '<='
+    @_('expr OR expr')
+    def expr(self, p):
+        return ('or', p.expr0, p.expr1)
 
-    @_('GREATEREQ')
-    def logical(self, p):
-        return '>='
+    @_('expr LESS expr')
+    def expr(self, p):
+        return ('<', p.expr0, p.expr1)
+
+    @_('expr GREATER expr')
+    def expr(self, p):
+        return ('>', p.expr0, p.expr1)
 
     @_('expr SEP')
     def statement(self, p):
@@ -118,7 +125,7 @@ class OParser(Parser):
     def expr(self, p):
         return -p.expr
 
-    @_('"!" expr %prec NOT')
+    @_('"!" expr')
     def expr(self, p):
         return ('!', p.expr)
 
@@ -185,7 +192,7 @@ class OParser(Parser):
     @_('exprs "," expr')
     def exprs(self, p):
         return p.exprs + [p.expr]
-        
+
     @_('var "[" INT "]"')
     def expr(self, p):
         return ('indexing', ('var', p.var), p.INT)

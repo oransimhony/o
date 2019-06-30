@@ -1,6 +1,6 @@
 from random import randint
 
-def standard_env():
+def standard_library():
     env = Env()
     env.update({
         'input': lambda prompt : input(prompt),
@@ -16,7 +16,7 @@ class Process:
         self.file_path = filename
         if not isinstance(env, Env):
             _env = env
-            env = Env(outer=standard_env())
+            env = Env(outer=standard_library())
             env.update(_env)
         self.env = Env(outer=env)
         self.should_return = False
@@ -206,6 +206,14 @@ class Process:
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
                 return result >= result2
+            elif action == 'and':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result and result2
+            elif action == 'or':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result or result2
             elif action == '!':
                 result = self.evaluate(parsed[1])
                 if result == True:

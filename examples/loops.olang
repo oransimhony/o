@@ -8,7 +8,12 @@ while i < 5 {
 print "";
 print "";
 
-for i = 0; i < 10; i = i + 1 {
-  if i % 2 == 0
+let break = false;
+
+for i = 0; i < 10 and !break; i = i + 1 {
+  if i % 2 == 0 or i < 2 {
     print i;
+  }
+  if i > 4 
+    break = true;
 }
