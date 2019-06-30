@@ -1,0 +1,28 @@
+fn add(a, b) {
+  a + b;
+}
+
+fn factorial(n) {
+  if n == 0 {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}
+
+print add(1, 2);
+
+print factorial(10);
+
+let add3 = lambda (n) => add(n, 3);
+
+print add3(15);
+
+fn closureAdd(x) {
+  fn innerAdd(y) {
+    return x + y;
+  }
+  return innerAdd;
+}
+
+let f = closureAdd(1);
+print f(2);

@@ -30,6 +30,14 @@ class OParser(Parser):
     def program(self, p):
         return ()
 
+    @_('FN ID "(" params ")" block')
+    def statement(self, p):
+        return ('fn', p.ID, ('params', p.params), ('block', p.block))
+
+    @_('LAMBDA "(" params ")" ARROW expr')
+    def expr(self, p):
+        return ('lambda', ('params', p.params), ('block', ('return', p.expr)))
+
     @_('var_define SEP')
     def statement(self, p):
         return p.var_define
@@ -45,6 +53,10 @@ class OParser(Parser):
     @_('var_assign SEP')
     def statement(self, p):
         return p.var_assign
+
+    @_('RETURN expr SEP')
+    def statement(self, p):
+        return ('return', p.expr)
 
     @_('ID ASSIGN expr')
     def var_assign(self, p):
@@ -69,6 +81,10 @@ class OParser(Parser):
     @_('FOR var_assign SEP expr SEP var_assign block')
     def statement(self, p):
         return (p.var_assign0, ('while', ('condition', p.expr), ('block', p.block + (p.var_assign1, ))))
+
+    @_('ID "(" args ")"')
+    def expr(self, p):
+        return ('call', p.ID, ('args', p.args))
 
     @_('expr logical expr')
     def expr(self, p):
@@ -157,3 +173,35 @@ class OParser(Parser):
     @_('statement')
     def block(self, p):
         return (p.statement, )
+
+    @_('params "," param')
+    def params(self, p):
+        return p.params + [p.param]
+
+    @_('param')
+    def params(self, p):
+        return [p.param]
+
+    @_('empty')
+    def params(self, p):
+        return []
+
+    @_('ID')
+    def param(self, p):
+        return p.ID
+
+    @_('args "," arg')
+    def args(self, p):
+        return p.args + [p.arg]
+
+    @_('arg')
+    def args(self, p):
+        return [p.arg]
+
+    @_('empty')
+    def args(self, p):
+        return []
+
+    @_('expr')
+    def arg(self, p):
+        return p.expr

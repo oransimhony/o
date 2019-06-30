@@ -27,13 +27,19 @@ def repl():
 def exec_file():
     lexer = OLexer()
     parser = OParser()
-    env = {}
     with open(sys.argv[1]) as opened_file:
         tokens = lexer.tokenize(opened_file.read())
         
+        # for token in tokens:
+        #     print(token)
+        
         tree = parser.parse(tokens)
+        # print(tree)
+
         program = Process(tree)
         program.run()
+        # print(program.env)
+
 
 
 if __name__ == "__main__":
