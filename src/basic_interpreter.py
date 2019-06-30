@@ -40,6 +40,8 @@ class Process:
             self.env[parsed[1]] = result
             return None 
         elif action == 'if':
+            # print(parsed)
+            # print(parsed[3])
             result = self.evaluate(parsed[1])
             if result:
                 return self.evaluate(parsed[2])
@@ -72,10 +74,30 @@ class Process:
             result = self.evaluate(parsed[1])
             result2 = self.evaluate(parsed[2])
             return int(result / result2)
-        elif action == 'eqeq':
+        elif action == '==':
             result = self.evaluate(parsed[1])
             result2 = self.evaluate(parsed[2])
             return result == result2
+        elif action == '!=':
+            result = self.evaluate(parsed[1])
+            result2 = self.evaluate(parsed[2])
+            return not (result == result2)
+        elif action == '<':
+            result = self.evaluate(parsed[1])
+            result2 = self.evaluate(parsed[2])
+            return result < result2
+        elif action == '>':
+            result = self.evaluate(parsed[1])
+            result2 = self.evaluate(parsed[2])
+            return result > result2
+        elif action == '<=':
+            result = self.evaluate(parsed[1])
+            result2 = self.evaluate(parsed[2])
+            return result <= result2
+        elif action == '>=':
+            result = self.evaluate(parsed[1])
+            result2 = self.evaluate(parsed[2])
+            return result >= result2
         else:
             print(parsed)
             return None

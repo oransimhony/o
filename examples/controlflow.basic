@@ -1,11 +1,14 @@
-let a = 1;
-let b = 2;
-if a == 2 {
-  a = 1;
-  b = 3;
+let a = 2;
+let b = 1;
+
+if a * 2 == 2 {
+  a = 15;
+} else if a == 3 {
+  a = 20;
+} else if b == 1 {
+  a = 25;
 } else {
-  a = 3;
+  a = 30;
 }
 
 print a;
-print b;

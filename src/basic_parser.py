@@ -41,17 +41,41 @@ class BasicParser(Parser):
     def statement(self, p):
         return ('print', p.expr)
 
-    @_('IF condition block ELSE block')
+    @_('IF expr block ELSE block')
     def statement(self, p):
-        return ('if', ('condition', p.condition), ('thenBody', p.block0), ('elseBody', p.block1))
+        return ('if', ('condition', p.expr), ('thenBody', p.block0), ('elseBody', p.block1))
 
-    @_('IF condition block')
+    @_('IF expr block')
     def statement(self, p):
-        return ('if', ('condition', p.condition), ('thenBody', p.block0), ('elseBody', None))
+        return ('if', ('condition', p.expr), ('thenBody', p.block0), ('elseBody', None))
 
-    @_('expr EQEQ expr')
-    def condition(self, p):
-        return ('eqeq', p.expr0, p.expr1)
+    @_('expr logical expr')
+    def expr(self, p):
+        return (p.logical, p.expr0, p.expr1)
+
+    @_('EQEQ')
+    def logical(self, p):
+        return '=='
+
+    @_('NOTEQ')
+    def logical(self, p):
+        return '!='
+
+    @_('LESS')
+    def logical(self, p):
+        return '<'
+
+    @_('GREATER')
+    def logical(self, p):
+        return '>'
+
+    @_('LESSEQ')
+    def logical(self, p):
+        return '<='
+
+    @_('GREATEREQ')
+    def logical(self, p):
+        return '>='
 
     @_('expr SEP')
     def statement(self, p):
@@ -103,4 +127,4 @@ class BasicParser(Parser):
 
     @_('statement')
     def block(self, p):
-        return p.statement
+        return (p.statement, )

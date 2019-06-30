@@ -3,7 +3,7 @@ from sly import Lexer
 
 class BasicLexer(Lexer):
     tokens = {ID, NUMBER, ASSIGN, STRING, LET,
-              PRINT, IF, ELSE, EQEQ, SEP}
+              PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -13,6 +13,11 @@ class BasicLexer(Lexer):
     PRINT = r'print'
     IF = r'if'
     ELSE = r'else'
+    LESS = r'<'
+    GREATER = r'>'
+    LESSEQ = r'<='
+    GREATEREQ = r'>='
+    NOTEQ = r'!='
     EQEQ = r'=='
     ASSIGN = r'='
     SEP = r';'
