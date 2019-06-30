@@ -29,16 +29,24 @@ class OParser(Parser):
     def program(self, p):
         return ()
 
-    @_('LET ID ASSIGN expr SEP')
+    @_('var_define SEP')
     def statement(self, p):
+        return p.var_define
+
+    @_('LET ID ASSIGN expr')
+    def var_define(self, p):
         return ('var_define', p.ID, p.expr)
 
     @_('LET ID SEP')
     def statement(self, p):
         return ('var_define', p.ID, None)
 
-    @_('ID ASSIGN expr SEP')
+    @_('var_assign SEP')
     def statement(self, p):
+        return p.var_assign
+
+    @_('ID ASSIGN expr')
+    def var_assign(self, p):
         return ('var_assign', p.ID, p.expr)
 
     @_('PRINT expr SEP')
@@ -56,6 +64,10 @@ class OParser(Parser):
     @_('WHILE expr block')
     def statement(self, p):
         return ('while', ('condition', p.expr), ('block', p.block))
+
+    @_('FOR var_assign SEP expr SEP var_assign block')
+    def statement(self, p):
+        return (p.var_assign0, ('while', ('condition', p.expr), ('block', p.block + (p.var_assign1, ))))
 
     @_('expr logical expr')
     def expr(self, p):

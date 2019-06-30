@@ -3,7 +3,7 @@ from sly import Lexer
 
 class OLexer(Lexer):
     tokens = {ID, NUMBER, ASSIGN, STRING, LET,
-              PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ, NIL, WHILE}
+              PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ, NIL, WHILE, FOR}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -15,10 +15,11 @@ class OLexer(Lexer):
     ELSE = r'else'
     NIL = r'nil'
     WHILE = r'while'
-    LESS = r'<'
-    GREATER = r'>'
+    FOR = r'for'
     LESSEQ = r'<='
     GREATEREQ = r'>='
+    LESS = r'<'
+    GREATER = r'>'
     NOTEQ = r'!='
     EQEQ = r'=='
     ASSIGN = r'='

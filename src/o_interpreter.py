@@ -6,6 +6,7 @@ class Process:
 
   def run(self, tree=None):
     if tree is None:
+      print(self.tree)
       for line in self.tree:
         # print(line)
         self.evaluate(line)
@@ -108,5 +109,8 @@ class Process:
             result2 = self.evaluate(parsed[2])
             return result >= result2
         else:
+            if len(parsed) > 0 and type(parsed[0]) == tuple:
+              return self.run(parsed)
+
             print(parsed)
             return None
