@@ -6,13 +6,14 @@ class OLexer(Lexer):
               PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS,
               GREATER, LESSEQ, GREATEREQ, NIL, WHILE,
               FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE,
-              AND, OR}
+              AND, OR, SHR, SHL}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
     literals = {'=', '+', '-', '/', '*',
                 '(', ')', ',', '{', '}',
-                '%', '[', ']', '!'}
+                '%', '[', ']', '!', '&',
+                '|', '^'}
 
     LET = r'let'
     PRINT = r'print'
@@ -28,6 +29,8 @@ class OLexer(Lexer):
     FALSE = r'false'
     AND = r'and'
     OR = r'or'
+    SHR = r'>>'
+    SHL = r'<<'
     ARROW = r'=>'
     LESSEQ = r'<='
     GREATEREQ = r'>='

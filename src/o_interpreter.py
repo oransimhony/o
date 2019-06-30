@@ -206,6 +206,26 @@ class Process:
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
                 return result >= result2
+            elif action == '<<':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result << result2
+            elif action == '>>':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result >> result2
+            elif action == '&':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result & result2
+            elif action == '^':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result ^ result2
+            elif action == '|':
+                result = self.evaluate(parsed[1])
+                result2 = self.evaluate(parsed[2])
+                return result | result2
             elif action == 'and':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])

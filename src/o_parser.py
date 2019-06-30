@@ -9,11 +9,15 @@ class OParser(Parser):
     precedence = (
         ('left', OR),
         ('left', AND),
+        ('left', '|'),
+        ('left', '^'),
+        ('left', '&'),
         ('left', EQEQ, NOTEQ),
         ('left', LESS, LESSEQ, GREATER, GREATEREQ),
+        ('left', SHL, SHR),
         ('left', '+', '-'),
         ('left', '*', '/', '%'),
-        ('right', 'UMINUS'),
+        ('right', 'UMINUS', 'UPLUS'),
         ('right', '!'),
     )
 
@@ -117,13 +121,37 @@ class OParser(Parser):
     def expr(self, p):
         return ('>', p.expr0, p.expr1)
 
+    @_('expr SHL expr')
+    def expr(self, p):
+        return ('<<', p.expr0, p.expr1)
+
+    @_('expr SHR expr')
+    def expr(self, p):
+        return ('>>', p.expr0, p.expr1)
+
+    @_('expr "&" expr')
+    def expr(self, p):
+        return ('&', p.expr0, p.expr1)
+
+    @_('expr "^" expr')
+    def expr(self, p):
+        return ('^', p.expr0, p.expr1)
+
+    @_('expr "|" expr')
+    def expr(self, p):
+        return ('|', p.expr0, p.expr1)
+
     @_('expr SEP')
     def statement(self, p):
         return p.expr
 
     @_('"-" expr %prec UMINUS')
     def expr(self, p):
-        return -p.expr
+        return ('neg', p.expr)
+
+    @_('"+" expr %prec UPLUS')
+    def expr(self, p):
+        return p.expr
 
     @_('"!" expr')
     def expr(self, p):
