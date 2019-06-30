@@ -1,8 +1,8 @@
 class Process:
-  def __init__(self, tree, filename="?"):
+  def __init__(self, tree, filename="?", env={}):
     self.tree = tree
     self.file_path = filename
-    self.env = {}
+    self.env = env
 
   def run(self, tree=None):
     if tree is None:

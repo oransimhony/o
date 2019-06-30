@@ -1,13 +1,13 @@
 from sly import Parser
-from basic_lexer import BasicLexer
+from o_lexer import OLexer
 
 
-class BasicParser(Parser):
+class OParser(Parser):
     debugfile = 'parser.out'
-    tokens = BasicLexer.tokens
+    tokens = OLexer.tokens
 
     precedence = (
-        ('left', EQEQ),
+        ('left', EQEQ, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ),
         ('left', '+', '-'),
         ('left', '*', '/'),
         ('right', 'UMINUS')

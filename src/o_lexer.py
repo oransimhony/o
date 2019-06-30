@@ -1,7 +1,7 @@
 from sly import Lexer
 
 
-class BasicLexer(Lexer):
+class OLexer(Lexer):
     tokens = {ID, NUMBER, ASSIGN, STRING, LET,
               PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS, GREATER, LESSEQ, GREATEREQ}
     ignore = ' \t'
