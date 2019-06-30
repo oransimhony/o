@@ -1,0 +1,19 @@
+let won = false;
+let guess;
+
+print "Welcome to the guessing game!";
+print "In this game you need to guess a number between 1 and 100";
+
+let number = random(100) + 1;
+
+while !won {
+  guess = int(input("Enter a number: "));
+  if guess == number {
+    print "You won!";
+    won = true;
+  } else if guess < number {
+    print "Your guess was too low";
+  } else {
+    print "Your guess was too high";
+  }
+}

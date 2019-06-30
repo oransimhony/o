@@ -11,7 +11,7 @@ class OParser(Parser):
         ('left', '+', '-'),
         ('left', '%'),
         ('left', '*', '/'),
-        ('right', 'UMINUS')
+        ('right', 'UMINUS', 'NOT')
     )
 
     @_('program statement')
@@ -118,6 +118,10 @@ class OParser(Parser):
     def expr(self, p):
         return -p.expr
 
+    @_('"!" expr %prec NOT')
+    def expr(self, p):
+        return ('!', p.expr)
+
     @_('expr "+" expr')
     def expr(self, p):
         return ('+', p.expr0, p.expr1)
@@ -153,6 +157,14 @@ class OParser(Parser):
     @_('STRING')
     def expr(self, p):
         return p.STRING
+
+    @_('TRUE')
+    def expr(self, p):
+        return True
+
+    @_('FALSE')
+    def expr(self, p):
+        return False
 
     @_('list_val')
     def expr(self, p):

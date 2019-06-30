@@ -1,10 +1,22 @@
+from random import randint
+
+def standard_env():
+    env = Env()
+    env.update({
+        'input': lambda prompt : input(prompt),
+        'random': lambda max : randint(0, max),
+        'int': lambda val : int(val),
+        'str': lambda val : str(val),
+    })
+    return env
+
 class Process:
     def __init__(self, tree, filename="?", env={}):
         self.tree = tree
         self.file_path = filename
         if not isinstance(env, Env):
             _env = env
-            env = Env()
+            env = Env(outer=standard_env())
             env.update(_env)
         self.env = Env(outer=env)
         self.should_return = False
@@ -12,10 +24,12 @@ class Process:
 
     def run(self, tree=None, env={}):
         current_env = self.env
+        result = None
         if env != {}:
             self.env = env
         if tree is None:
             for line in self.tree:
+                # print(line)
                 result = self.evaluate(line)
                 if self.should_return:
                     self.depth -= 1
@@ -38,6 +52,10 @@ class Process:
     def stringify(self, expr):
         if expr is None:
             return "nil"
+        elif expr is True:
+            return "true"
+        elif expr is False:
+            return "false"
         return str(expr)
 
     def evaluate(self, parsed):
@@ -63,8 +81,15 @@ class Process:
                 #     return
                 func = self.env.find(parsed[1])
                 if not isinstance(func, Function):
-                    print('\'%s\' not a function' % parsed[1])
-                    return
+                    if type(func) == type(lambda x : x):
+                        args = [self.evaluate(arg) for arg in parsed[2][1]]
+                        self.depth += 1
+                        res = func(*args)
+                        self.depth -= 1
+                        return res
+                    else:
+                        print('\'%s\' not a function' % parsed[1])
+                        return
 
                 # body = func['body']
                 # params = func['params'][1]
@@ -181,6 +206,11 @@ class Process:
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
                 return result >= result2
+            elif action == '!':
+                result = self.evaluate(parsed[1])
+                if result == True:
+                    return False
+                return True
             else:
                 if len(parsed) > 0 and type(parsed[0]) == tuple:
                     return self.run(parsed)
