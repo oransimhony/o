@@ -1,0 +1,11 @@
+let a = 1;
+let b = 2;
+if a == 2 {
+  a = 1;
+  b = 3;
+} else {
+  a = 3;
+}
+
+print a;
+print b;

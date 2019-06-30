@@ -1,5 +1,5 @@
-let a = 5
-let b = a + 2
-print a 
-print b
-print a * b
+let a = 5;
+let b = a + 2;
+print a; 
+print b;
+print a * b;
