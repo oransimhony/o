@@ -29,7 +29,6 @@ class Process:
             self.env = env
         if tree is None:
             for line in self.tree:
-                # print(line)
                 result = self.evaluate(line)
                 if self.should_return:
                     self.depth -= 1

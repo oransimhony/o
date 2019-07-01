@@ -6,7 +6,8 @@ class OLexer(Lexer):
               PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS,
               GREATER, LESSEQ, GREATEREQ, NIL, WHILE,
               FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE,
-              AND, OR, SHR, SHL}
+              AND, OR, SHR, SHL, INC, DEC, PLUSASGN,
+              MINUSASGN, STARASGN, SLASHASGN}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -31,6 +32,12 @@ class OLexer(Lexer):
     OR = r'or'
     SHR = r'>>'
     SHL = r'<<'
+    INC = r'\+\+'
+    DEC = r'--'
+    PLUSASGN = r'\+='
+    MINUSASGN = r'-='
+    STARASGN = r'\*='
+    SLASHASGN = r'/='
     ARROW = r'=>'
     LESSEQ = r'<='
     GREATEREQ = r'>='

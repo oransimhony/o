@@ -7,6 +7,7 @@ class OParser(Parser):
     tokens = OLexer.tokens
 
     precedence = (
+        ('right', PLUSASGN, MINUSASGN, STARASGN, SLASHASGN),
         ('left', OR),
         ('left', AND),
         ('left', '|'),
@@ -17,7 +18,7 @@ class OParser(Parser):
         ('left', SHL, SHR),
         ('left', '+', '-'),
         ('left', '*', '/', '%'),
-        ('right', 'UMINUS', 'UPLUS'),
+        ('right', 'UMINUS', 'UPLUS', INC, DEC),
         ('right', '!'),
     )
 
@@ -64,6 +65,22 @@ class OParser(Parser):
     @_('var ASSIGN expr')
     def var_assign(self, p):
         return ('var_assign', p.var, p.expr)
+
+    @_('var PLUSASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('+', ('var', p.var), p.expr))
+
+    @_('var MINUSASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('-', ('var', p.var), p.expr))
+
+    @_('var STARASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('*', ('var', p.var), p.expr))
+
+    @_('var SLASHASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('/', ('var', p.var), p.expr))
 
     @_('PRINT expr SEP')
     def statement(self, p):
@@ -160,6 +177,14 @@ class OParser(Parser):
     @_('"!" expr')
     def expr(self, p):
         return ('!', p.expr)
+
+    @_('var INC')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('+', ('var', p.var), 1))
+
+    @_('var DEC')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('-', ('var', p.var), 1))
 
     @_('expr "+" expr')
     def expr(self, p):
