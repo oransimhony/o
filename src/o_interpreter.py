@@ -5,8 +5,19 @@ def standard_library():
     env.update({
         'input': lambda prompt : input(prompt),
         'random': lambda max : randint(0, max),
-        'int': lambda val : int(val),
-        'str': lambda val : str(val),
+        'is_float': lambda val : isinstance(val, float),
+        'is_int': lambda val : isinstance(val, int),
+        'is_string': lambda val : isinstance(val, str),
+        'is_list': lambda val : isinstance(val, list),
+        'is_bool': lambda val : isinstance(val, bool),
+        'to_float': lambda val : float(val),
+        'to_int': lambda val : int(val),
+        'to_string': lambda val : str(val),
+        'to_list': lambda val : list(val),
+        'to_bool': lambda val : bool(val),
+        'append': lambda lst, val : lst.append(val),
+        'pop': lambda lst : lst.pop(),
+        'pop_at' : lambda lst, idx : lst.pop(idx)
     })
     return env
 
