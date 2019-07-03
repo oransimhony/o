@@ -7,14 +7,15 @@ class OLexer(Lexer):
               GREATER, LESSEQ, GREATEREQ, NIL, WHILE,
               FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE,
               AND, OR, SHR, SHL, INC, DEC, PLUSASGN,
-              MINUSASGN, STARASGN, SLASHASGN}
+              MINUSASGN, STARASGN, SLASHASGN, MODULOASGN,
+              ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
     literals = {'=', '+', '-', '/', '*',
                 '(', ')', ',', '{', '}',
                 '%', '[', ']', '!', '&',
-                '|', '^', '?', ':'}
+                '|', '^', '?', ':', '~'}
 
     LET = r'let'
     PRINT = r'print'
@@ -30,14 +31,18 @@ class OLexer(Lexer):
     FALSE = r'false'
     AND = r'and'
     OR = r'or'
-    SHR = r'>>'
-    SHL = r'<<'
     INC = r'\+\+'
     DEC = r'--'
     PLUSASGN = r'\+='
     MINUSASGN = r'-='
     STARASGN = r'\*='
     SLASHASGN = r'/='
+    MODULOASGN = r'%='
+    ANDASGN = r'&='
+    ORASGN = r'\|='
+    XORASGN = r'^='
+    SHLASGN = r'<<='
+    SHRASGN = r'>>='
     ARROW = r'=>'
     LESSEQ = r'<='
     GREATEREQ = r'>='
@@ -46,6 +51,8 @@ class OLexer(Lexer):
     NOTEQ = r'!='
     EQEQ = r'=='
     ASSIGN = r'='
+    SHR = r'>>'
+    SHL = r'<<'
     SEP = r';'
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'

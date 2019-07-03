@@ -7,7 +7,8 @@ class OParser(Parser):
     tokens = OLexer.tokens
 
     precedence = (
-        ('right', PLUSASGN, MINUSASGN, STARASGN, SLASHASGN),
+        ('right', PLUSASGN, MINUSASGN, STARASGN, SLASHASGN,
+         MODULOASGN, ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN),
         ('left', OR),
         ('left', AND),
         ('left', '|'),
@@ -81,6 +82,30 @@ class OParser(Parser):
     @_('var SLASHASGN expr')
     def var_assign(self, p):
         return ('var_assign', p.var, ('/', ('var', p.var), p.expr))
+
+    @_('var MODULOASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('%', ('var', p.var), p.expr))
+
+    @_('var ANDASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('&', ('var', p.var), p.expr))
+
+    @_('var ORASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('|', ('var', p.var), p.expr))
+
+    @_('var XORASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('^', ('var', p.var), p.expr))
+
+    @_('var SHLASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('<<', ('var', p.var), p.expr))
+
+    @_('var SHRASGN expr')
+    def var_assign(self, p):
+        return ('var_assign', p.var, ('>>', ('var', p.var), p.expr))
 
     @_('PRINT expr SEP')
     def statement(self, p):
