@@ -1,25 +1,28 @@
 from random import randint
 
+
 def standard_library():
     env = Env()
     env.update({
-        'input': lambda prompt : input(prompt),
-        'random': lambda max : randint(0, max),
-        'is_float': lambda val : isinstance(val, float),
-        'is_int': lambda val : isinstance(val, int),
-        'is_string': lambda val : isinstance(val, str),
-        'is_list': lambda val : isinstance(val, list),
-        'is_bool': lambda val : isinstance(val, bool),
-        'to_float': lambda val : float(val),
-        'to_int': lambda val : int(val),
-        'to_string': lambda val : str(val),
-        'to_list': lambda val : list(val),
-        'to_bool': lambda val : bool(val),
-        'append': lambda lst, val : lst.append(val),
-        'pop': lambda lst : lst.pop(),
-        'pop_at' : lambda lst, idx : lst.pop(idx)
+        'input': lambda prompt: input(prompt),
+        'random': lambda max: randint(0, max),
+        'is_float': lambda val: isinstance(val, float),
+        'is_int': lambda val: isinstance(val, int),
+        'is_string': lambda val: isinstance(val, str),
+        'is_list': lambda val: isinstance(val, list),
+        'is_bool': lambda val: isinstance(val, bool),
+        'to_float': lambda val: float(val),
+        'to_int': lambda val: int(val),
+        'to_string': lambda val: str(val),
+        'to_list': lambda val: list(val),
+        'to_bool': lambda val: bool(val),
+        'append': lambda lst, val: lst.append(val),
+        'pop': lambda lst: lst.pop(),
+        'pop_at': lambda lst, idx: lst.pop(idx),
+        'extend': lambda lst1, lst2: lst1.extend(lst2)
     })
     return env
+
 
 class Process:
     def __init__(self, tree, filename="?", env={}):
@@ -83,7 +86,8 @@ class Process:
             elif action == 'fn':
                 params = parsed[2]
                 body = parsed[3]
-                self.env.update({parsed[1]: Function(self, params[1], body, self.env)})
+                self.env.update({parsed[1]: Function(
+                    self, params[1], body, self.env)})
                 return None
             elif action == 'call':
                 # if parsed[1] not in self.env:
@@ -91,7 +95,7 @@ class Process:
                 #     return
                 func = self.env.find(parsed[1])
                 if not isinstance(func, Function):
-                    if type(func) == type(lambda x : x):
+                    if type(func) == type(lambda x: x):
                         args = [self.evaluate(arg) for arg in parsed[2][1]]
                         self.depth += 1
                         res = func(*args)
@@ -138,7 +142,7 @@ class Process:
                 if type(parsed[1]) is not tuple:
                     if parsed[1] not in self.env:
                         print('Cannot assign to undefined variable \'%s\'' %
-                            parsed[1])
+                              parsed[1])
                         return None
                     result = self.evaluate(parsed[2])
                     self.env.update({parsed[1]: result})
@@ -236,6 +240,9 @@ class Process:
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
                 return result | result2
+            elif action == '~':
+                result = self.evaluate(parsed[1])
+                return ~result
             elif action == 'and':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])

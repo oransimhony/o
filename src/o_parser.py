@@ -19,7 +19,7 @@ class OParser(Parser):
         ('left', SHL, SHR),
         ('left', '+', '-'),
         ('left', '*', '/', '%'),
-        ('right', 'UMINUS', 'UPLUS', INC, DEC),
+        ('right', 'UMINUS', 'UPLUS', 'LOGICALNOT', INC, DEC),
         ('right', '!'),
     )
 
@@ -186,6 +186,10 @@ class OParser(Parser):
     @_('expr "|" expr')
     def expr(self, p):
         return ('|', p.expr0, p.expr1)
+
+    @_('"~" expr %prec LOGICALNOT')
+    def expr(self, p):
+        return ('~', p.expr)
 
     @_('expr SEP')
     def statement(self, p):
