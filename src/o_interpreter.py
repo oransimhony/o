@@ -1,5 +1,5 @@
 from random import randint
-
+from math import sin, cos, tan, sinh, cosh, tanh ,ceil, floor, sqrt
 
 def standard_library():
     env = Env()
@@ -19,7 +19,18 @@ def standard_library():
         'append': lambda lst, val: lst.append(val),
         'pop': lambda lst: lst.pop(),
         'pop_at': lambda lst, idx: lst.pop(idx),
-        'extend': lambda lst1, lst2: lst1.extend(lst2)
+        'extend': lambda lst1, lst2: lst1.extend(lst2),
+        'sin': lambda val : sin(val),
+        'cos': lambda val : cos(val),
+        'tan': lambda val : tan(val),
+        'sinh': lambda val : sinh(val),
+        'cosh': lambda val : cosh(val),
+        'tanh': lambda val : tanh(val),
+        'ceil': lambda val : ceil(val),
+        'floor': lambda val : floor(val),
+        'abs': lambda val : abs(val),
+        'sqrt': lambda val : sqrt(val),
+        'pow': lambda base, exponent : pow(base, exponent)333333
     })
     return env
 
