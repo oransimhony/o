@@ -1,0 +1,5 @@
+import test
+
+printHello();
+
+print addTwoNumbers(5, 123);

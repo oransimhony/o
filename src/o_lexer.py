@@ -8,7 +8,8 @@ class OLexer(Lexer):
               FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE,
               AND, OR, SHR, SHL, INC, DEC, PLUSASGN,
               MINUSASGN, STARASGN, SLASHASGN, MODULOASGN,
-              ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN}
+              ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN,
+              IMPORT}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -56,6 +57,7 @@ class OLexer(Lexer):
     ID['false'] = FALSE
     ID['and'] = AND
     ID['or'] = OR
+    ID['import'] = IMPORT
 
     @_(r'\d+\.\d+')
     def FLOAT(self, t):

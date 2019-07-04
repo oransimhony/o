@@ -1,5 +1,8 @@
 from random import randint
 from math import sin, cos, tan, sinh, cosh, tanh ,ceil, floor, sqrt, degrees, radians
+from os.path import exists, dirname, join
+from o_lexer import OLexer
+from o_parser import OParser
 
 def standard_library():
     env = Env()
@@ -96,6 +99,13 @@ class Process:
                 result = self.evaluate(parsed[1])
                 print(self.stringify(result))
                 return None
+            elif action == 'import':
+                base_dir = dirname(__file__)
+                rel_path = 'include/' + parsed[1] + '.olang'
+                path = join(base_dir, rel_path)
+                if exists(path):
+                    fp = open(path)
+                    self.import_contents(fp.read())
             elif action == 'fn':
                 params = parsed[2]
                 body = parsed[3]
@@ -103,9 +113,6 @@ class Process:
                     self, params[1], body, self.env)})
                 return None
             elif action == 'call':
-                # if parsed[1] not in self.env:
-                #     print('\'%s\' is undefined' % parsed[1])
-                #     return
                 func = self.env.find(parsed[1])
                 if not isinstance(func, Function):
                     if type(func) == type(lambda x: x):
@@ -118,20 +125,11 @@ class Process:
                         print('\'%s\' not a function' % parsed[1])
                         return
 
-                # body = func['body']
-                # params = func['params'][1]
-                # args = parsed[2][1]
-                # if len(params) != len(args):
-                #     print("An incorrect number of arguments was given. Got=%d, Should Get=%d" % (
-                #         len(args), len(params)))
-                # func.update({"env": Env(params, args, self.env) })
                 args = [self.evaluate(arg) for arg in parsed[2][1]]
                 self.depth += 1
                 res = func(*args)
                 self.depth -= 1
                 return res
-                # result = self.run(body, func['env'])
-                # return result
 
             elif action == 'lambda':
                 body = parsed[2]
@@ -280,6 +278,19 @@ class Process:
 
                 print(parsed)
                 return None
+
+    def import_contents(self, file_contents):
+        lexer = OLexer()
+        parser = OParser()
+
+        tokens = lexer.tokenize(file_contents)
+        
+        tree = parser.parse(tokens)
+        # print(tree)
+
+        program = Process(tree)
+        program.run()
+        self.env.update(program.env)
 
 
 class Env(dict):

@@ -1,0 +1,7 @@
+fn printHello() {
+  print "Hello";
+}
+
+fn addTwoNumbers(a, b) {
+  return a + b;
+}

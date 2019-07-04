@@ -35,6 +35,10 @@ class OParser(Parser):
     def program(self, p):
         return ()
 
+    @_('IMPORT ID')
+    def statement(self, p):
+        return ('import', p.ID)
+
     @_('FN ID "(" params ")" block')
     def statement(self, p):
         return ('fn', p.ID, ('params', p.params), ('block', p.block))
