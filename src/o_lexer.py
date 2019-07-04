@@ -17,20 +17,6 @@ class OLexer(Lexer):
                 '%', '[', ']', '!', '&',
                 '|', '^', '?', ':', '~'}
 
-    LET = r'let'
-    PRINT = r'print'
-    IF = r'if'
-    ELSE = r'else'
-    NIL = r'nil'
-    WHILE = r'while'
-    FOR = r'for'
-    FN = r'fn'
-    RETURN = r'return'
-    LAMBDA = r'lambda'
-    TRUE = r'true'
-    FALSE = r'false'
-    AND = r'and'
-    OR = r'or'
     INC = r'\+\+'
     DEC = r'--'
     PLUSASGN = r'\+='
@@ -56,6 +42,20 @@ class OLexer(Lexer):
     SEP = r';'
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
+    ID['let'] = LET
+    ID['print'] = PRINT
+    ID['if'] = IF
+    ID['else'] = ELSE
+    ID['nil'] = NIL
+    ID['while'] = WHILE
+    ID['for'] = FOR
+    ID['fn'] = FN
+    ID['return'] = RETURN
+    ID['lambda'] = LAMBDA
+    ID['true'] = TRUE
+    ID['false'] = FALSE
+    ID['and'] = AND
+    ID['or'] = OR
 
     @_(r'\d+\.\d+')
     def FLOAT(self, t):
