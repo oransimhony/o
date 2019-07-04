@@ -3,3 +3,7 @@ import test
 printHello();
 
 print addTwoNumbers(5, 123);
+
+let grades = [100, 90, 80];
+
+print avg(grades);

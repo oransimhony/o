@@ -10,7 +10,7 @@ print "";
 
 let break = false;
 
-for i = 0; i < 10 and !break; i++ {
+for i = 0; i < 10 and !break; ++i {
   if i % 2 == 0 or i < 2 {
     print i;
   }

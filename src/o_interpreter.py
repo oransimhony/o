@@ -1,6 +1,7 @@
 from random import randint
 from math import sin, cos, tan, sinh, cosh, tanh ,ceil, floor, sqrt, degrees, radians
 from os.path import exists, dirname, join
+from os import getenv
 from o_lexer import OLexer
 from o_parser import OParser
 
@@ -23,6 +24,7 @@ def standard_library():
         'pop': lambda lst: lst.pop(),
         'pop_at': lambda lst, idx: lst.pop(idx),
         'extend': lambda lst1, lst2: lst1.extend(lst2),
+        'len': lambda obj : len(obj),
         'sin': lambda val : sin(val),
         'cos': lambda val : cos(val),
         'tan': lambda val : tan(val),
@@ -100,7 +102,9 @@ class Process:
                 print(self.stringify(result))
                 return None
             elif action == 'import':
-                base_dir = dirname(__file__)
+                base_dir = getenv('OPATH')
+                if base_dir is None:
+                    base_dir = dirname(__file__)
                 rel_path = 'include/' + parsed[1] + '.olang'
                 path = join(base_dir, rel_path)
                 if exists(path):
@@ -184,7 +188,10 @@ class Process:
                 var = self.evaluate(parsed[1])
                 index = self.evaluate(parsed[2])
                 if index > len(var):
-                    console.log('index out of bounds error')
+                    print('Index out of bounds error')
+                    return None
+                elif type(index) != int:
+                    print('List indices must be integers')
                     return None
                 return var[index]
             elif action == '+':
@@ -284,6 +291,9 @@ class Process:
         parser = OParser()
 
         tokens = lexer.tokenize(file_contents)
+
+        # for token in tokens:
+        #     print(token)
         
         tree = parser.parse(tokens)
         # print(tree)

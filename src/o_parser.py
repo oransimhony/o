@@ -211,11 +211,11 @@ class OParser(Parser):
     def expr(self, p):
         return ('!', p.expr)
 
-    @_('var INC')
+    @_('INC var')
     def var_assign(self, p):
         return ('var_assign', p.var, ('+', ('var', p.var), 1))
 
-    @_('var DEC')
+    @_('DEC var')
     def var_assign(self, p):
         return ('var_assign', p.var, ('-', ('var', p.var), 1))
 
@@ -283,9 +283,9 @@ class OParser(Parser):
     def exprs(self, p):
         return p.exprs + [p.expr]
 
-    @_('var "[" INT "]"')
+    @_('var "[" expr "]"')
     def expr(self, p):
-        return ('indexing', ('var', p.var), p.INT)
+        return ('indexing', ('var', p.var), p.expr)
 
     @_('var')
     def expr(self, p):
@@ -295,9 +295,9 @@ class OParser(Parser):
     def var(self, p):
         return p.ID
 
-    @_('var "[" INT "]"')
+    @_('var "[" expr "]"')
     def var(self, p):
-        return ('indexing', ('var', p.var), p.INT)
+        return ('indexing', ('var', p.var), p.expr)
 
     @_('NIL')
     def expr(self, p):
