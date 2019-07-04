@@ -1,5 +1,5 @@
 from random import randint
-from math import sin, cos, tan, sinh, cosh, tanh ,ceil, floor, sqrt
+from math import sin, cos, tan, sinh, cosh, tanh ,ceil, floor, sqrt, degrees, radians
 
 def standard_library():
     env = Env()
@@ -30,7 +30,9 @@ def standard_library():
         'floor': lambda val : floor(val),
         'abs': lambda val : abs(val),
         'sqrt': lambda val : sqrt(val),
-        'pow': lambda base, exponent : pow(base, exponent)333333
+        'pow': lambda base, exponent : pow(base, exponent),
+        'deg': lambda val : degrees(val),
+        'rad': lambda val : radians(val)
     })
     return env
 
