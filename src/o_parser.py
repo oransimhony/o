@@ -21,6 +21,7 @@ class OParser(Parser):
         ('left', '*', '/', '%'),
         ('right', 'UMINUS', 'UPLUS', 'LOGICALNOT', INC, DEC),
         ('right', '!'),
+        ('left', '.')
     )
 
     @_('program statement')
@@ -50,6 +51,10 @@ class OParser(Parser):
     @_('var_define SEP')
     def statement(self, p):
         return p.var_define
+
+    @_('ID "." ID')
+    def expr(self, p):
+        return ('.', p.ID0, p.ID1)
 
     @_('LET var ASSIGN expr')
     def var_define(self, p):
@@ -262,6 +267,26 @@ class OParser(Parser):
     @_('FALSE')
     def expr(self, p):
         return False
+
+    @_('"{" member_list "}"')
+    def expr(self, p):
+        return p.member_list
+
+    @_('empty')
+    def member_list(self, p):
+        return {}
+
+    @_('member')
+    def member_list(self, p):
+        return p.member
+
+    @_('member_list "," member')
+    def member_list(self, p):
+        return { **p.member_list, **p.member }
+
+    @_('STRING ":" expr')
+    def member(self, p):
+        return { p.STRING : p.expr }
 
     @_('list_val')
     def expr(self, p):

@@ -279,6 +279,11 @@ class Process:
                 if cond:
                     return self.evaluate(parsed[2])
                 return self.evaluate(parsed[3])
+            elif action == '.':
+                var = self.env.find(parsed[1])
+                res = self.evaluate(var[parsed[2]])
+                return res
+
             else:
                 if len(parsed) > 0 and type(parsed[0]) == tuple:
                     return self.run(parsed)
