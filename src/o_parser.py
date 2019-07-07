@@ -21,7 +21,6 @@ class OParser(Parser):
         ('left', '*', '/', '%'),
         ('right', 'UMINUS', 'UPLUS', 'LOGICALNOT', INC, DEC),
         ('right', '!'),
-        ('left', '.')
     )
 
     @_('program statement')
@@ -36,26 +35,50 @@ class OParser(Parser):
     def program(self, p):
         return ()
 
+    @_('import_statement')
+    def statement(self, p):
+        return p.import_statement
+
+    @_('function_declaration')
+    def statement(self, p):
+        return p.function_declaration
+
+    @_('return_statement')
+    def statement(self, p):
+        return p.return_statement
+
+    @_('print_statement')
+    def statement(self, p):
+        return p.print_statement
+
+    @_('while_statement')
+    def statement(self, p):
+        return p.while_statement
+    
+    @_('for_statement')
+    def statement(self, p):
+        return p.for_statement
+    
+    @_('if_statement')
+    def statement(self, p):
+        return p.if_statement
+
     @_('IMPORT ID')
-    def statement(self, p):
+    def import_statement(self, p):
         return ('import', p.ID)
-
-    @_('FN ID "(" params ")" block')
-    def statement(self, p):
-        return ('fn', p.ID, ('params', p.params), ('block', p.block))
-
-    @_('LAMBDA "(" params ")" ARROW expr')
-    def expr(self, p):
-        return ('lambda', ('params', p.params), ('block', ('return', p.expr)))
 
     @_('var_define SEP')
     def statement(self, p):
         return p.var_define
 
-    @_('ID "." ID')
-    def expr(self, p):
-        return ('.', p.ID0, p.ID1)
+    @_('FN ID "(" params ")" block')
+    def function_declaration(self, p):
+        return ('fn', p.ID, ('params', p.params), ('block', p.block))
 
+    @_('LAMBDA "(" params ")" ARROW expr')
+    def expr(self, p):
+        return ('lambda', ('params', p.params), ('block', ('return', p.expr)))
+        
     @_('LET var ASSIGN expr')
     def var_define(self, p):
         return ('var_define', p.var, p.expr)
@@ -69,7 +92,7 @@ class OParser(Parser):
         return p.var_assign
 
     @_('RETURN expr SEP')
-    def statement(self, p):
+    def return_statement(self, p):
         return ('return', p.expr)
 
     @_('var ASSIGN expr')
@@ -117,23 +140,23 @@ class OParser(Parser):
         return ('var_assign', p.var, ('>>', ('var', p.var), p.expr))
 
     @_('PRINT expr SEP')
-    def statement(self, p):
+    def print_statement(self, p):
         return ('print', p.expr)
 
     @_('IF expr block ELSE block')
-    def statement(self, p):
+    def if_statement(self, p):
         return ('if', ('condition', p.expr), ('block', p.block0), ('block', p.block1))
 
     @_('IF expr block')
-    def statement(self, p):
+    def if_statement(self, p):
         return ('if', ('condition', p.expr), ('block', p.block), None)
 
     @_('WHILE expr block')
-    def statement(self, p):
+    def while_statement(self, p):
         return ('while', ('condition', p.expr), ('block', p.block))
 
     @_('FOR var_assign SEP expr SEP var_assign block')
-    def statement(self, p):
+    def for_statement(self, p):
         return (p.var_assign0, ('while', ('condition', p.expr), ('block', p.block + (p.var_assign1, ))))
 
     @_('expr "?" expr ":" expr')
@@ -267,26 +290,6 @@ class OParser(Parser):
     @_('FALSE')
     def expr(self, p):
         return False
-
-    @_('"{" member_list "}"')
-    def expr(self, p):
-        return p.member_list
-
-    @_('empty')
-    def member_list(self, p):
-        return {}
-
-    @_('member')
-    def member_list(self, p):
-        return p.member
-
-    @_('member_list "," member')
-    def member_list(self, p):
-        return { **p.member_list, **p.member }
-
-    @_('STRING ":" expr')
-    def member(self, p):
-        return { p.STRING : p.expr }
 
     @_('list_val')
     def expr(self, p):
