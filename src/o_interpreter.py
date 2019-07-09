@@ -10,6 +10,7 @@ def standard_library():
     env.update({
         'input': lambda prompt: input(prompt),
         'random': lambda max: randint(0, max),
+        'typeof': lambda val: type(val),
         'is_float': lambda val: isinstance(val, float),
         'is_int': lambda val: isinstance(val, int),
         'is_string': lambda val: isinstance(val, str),
