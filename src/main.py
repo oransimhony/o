@@ -8,6 +8,7 @@ def repl():
     lexer = OLexer()
     parser = OParser()
     env = {}
+    program = Process((), env=env)
     while True:
         try:
             text = input('>> ')
@@ -19,9 +20,9 @@ def repl():
             tokens = lexer.tokenize(text)
             
             tree = parser.parse(tokens)
-            program = Process(tree, env)
+            program.tree = tree
             program.run()
-            env = program.env
+            print(program.env)
 
 
 def exec_file():
