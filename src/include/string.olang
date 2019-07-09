@@ -1,0 +1,38 @@
+fn is_alpha(s) {
+  if typeof(s) != typeof("") return false;
+  let i;
+  let ch;
+  for i = 0; i < len(s); ++i {
+    ch = s[i];
+    if !("a" <= ch and ch <= "z" or "A" <= ch and ch <= "Z") {
+      return false;
+    }
+  }
+  return true;
+}
+
+fn is_numeric(s) {
+  if typeof(s) != typeof("") return false;
+  let i;
+  let ch;
+  for i = 0; i < len(s); ++i {
+    ch = s[i];
+    if !("0" <= ch and ch <= "9") {
+      return false;
+    }
+  }
+  return true;
+}
+
+fn is_alphanumeric(s) {
+  if typeof(s) != typeof("") return false;
+  let i;
+  let ch;
+  for i = 0; i < len(s); ++i {
+    ch = s[i];
+    if !(is_alpha(ch) or is_numeric(ch)) {
+      return false;
+    }
+  }
+  return true;
+}
