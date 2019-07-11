@@ -5,6 +5,7 @@ print b;
 print a * b;
 let str = "Hello";
 str = str + " World!";
+print "Mr. \nNewline";
 print str;
 let list = [0, 1, 2];
 print list[0];
