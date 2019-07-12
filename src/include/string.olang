@@ -2,37 +2,52 @@ fn is_alpha(s) {
   if typeof(s) != typeof("") return false;
   let i;
   let ch;
+  let res = true;
   for i = 0; i < len(s); ++i {
     ch = s[i];
     if !("a" <= ch and ch <= "z" or "A" <= ch and ch <= "Z") {
-      return false;
+      res = false;
     }
   }
-  return true;
+  return res;
 }
 
 fn is_numeric(s) {
   if typeof(s) != typeof("") return false;
   let i;
   let ch;
+  let res = true;
   for i = 0; i < len(s); ++i {
     ch = s[i];
     if !("0" <= ch and ch <= "9") {
-      return false;
+      res = false;
     }
   }
-  return true;
+  return res;
 }
 
 fn is_alphanumeric(s) {
   if typeof(s) != typeof("") return false;
   let i;
   let ch;
+  let res = true;
   for i = 0; i < len(s); ++i {
     ch = s[i];
     if !(is_alpha(ch) or is_numeric(ch)) {
-      return false;
+      res = false;
     }
   }
-  return true;
+  return res;
+}
+
+fn startswith(string, start) {
+  if len(start) > len(string) return false;
+  let i;
+  let res = true;
+  for i = 0; i < len(start); ++i {
+    if string[i] != start[i] {
+      res = false;
+    }
+  }
+  return res;
 }

@@ -63,7 +63,7 @@ class OParser(Parser):
     def statement(self, p):
         return p.if_statement
 
-    @_('IMPORT ID')
+    @_('IMPORT ID SEP')
     def import_statement(self, p):
         return ('import', p.ID)
 

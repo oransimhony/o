@@ -222,7 +222,7 @@ class Process:
             elif action == '!=':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
-                return not (result == result2)
+                return result != result2
             elif action == '<':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])

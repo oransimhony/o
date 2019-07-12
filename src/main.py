@@ -22,7 +22,6 @@ def repl():
             tree = parser.parse(tokens)
             program.tree = tree
             program.run()
-            print(program.env)
 
 
 def exec_file():
