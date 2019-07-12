@@ -374,3 +374,27 @@ class OParser(Parser):
     @_('expr')
     def arg(self, p):
         return p.expr
+
+    @_('"{" member_list "}"')
+    def expr(self, p):
+        return p.member_list
+
+    @_('empty')
+    def member_list(self, p):
+        return {}
+
+    @_('member')
+    def member_list(self, p):
+        return p.member
+
+    @_('member_list "," member')
+    def member_list(self, p):
+        return { **p.member_list, **p.member }
+
+    @_('STRING ":" expr')
+    def member(self, p):
+        return { p.STRING : p.expr }
+
+    @_('ID "." ID')
+    def expr(self, p):
+        return ('.', p.ID0, p.ID1)
