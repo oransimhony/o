@@ -64,19 +64,11 @@ class Process:
             for line in self.tree:
                 result = self.evaluate(line)
                 if self.should_return:
-                    self.depth -= 1
-                    if self.depth <= 0:
-                        self.depth = 0
-                        self.should_return = False
                     return result
         else:
             for line in tree:
                 result = self.evaluate(line)
                 if self.should_return:
-                    self.depth -= 1
-                    if self.depth <= 0:
-                        self.depth = 0
-                        self.should_return = False
                     return result
         self.env = current_env
         return result
@@ -210,7 +202,7 @@ class Process:
             elif action == '/':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
-                return int(result / result2)
+                return result / result2
             elif action == '%':
                 result = self.evaluate(parsed[1])
                 result2 = self.evaluate(parsed[2])
