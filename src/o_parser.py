@@ -63,6 +63,26 @@ class OParser(Parser):
     def statement(self, p):
         return p.if_statement
 
+    @_('struct_definition')
+    def statement(self, p):
+        return p.struct_definition
+
+    @_('STRUCT ID "{" struct_fields "}" SEP')
+    def struct_definition(self, p):
+        return ('struct', p.ID, p.struct_fields)
+
+    @_('struct_field')
+    def struct_fields(self, p):
+        return p.struct_field
+
+    @_('struct_fields struct_field')
+    def struct_fields(self, p):
+        return p.struct_fields + p.struct_field
+
+    @_('LET ID SEP')
+    def struct_field(self, p):
+        return [p.ID]
+
     @_('IMPORT ID SEP')
     def import_statement(self, p):
         return ('import', p.ID)
@@ -74,6 +94,22 @@ class OParser(Parser):
     @_('FN ID "(" params ")" block')
     def function_declaration(self, p):
         return ('fn', p.ID, ('params', p.params), ('block', p.block))
+
+    @_('init_struct')
+    def expr(self, p):
+        return p.init_struct
+
+    @_('ID "{" struct_init_exprs "}" ')
+    def init_struct(self, p):
+        return ('init_struct', p.ID, p.struct_init_exprs)
+
+    @_('expr')
+    def struct_init_exprs(self, p):
+        return [p.expr]
+
+    @_('struct_init_exprs "," expr')
+    def struct_init_exprs(self, p):
+        return p.struct_init_exprs + [p.expr]
 
     @_('LAMBDA "(" params ")" ARROW expr')
     def expr(self, p):

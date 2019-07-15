@@ -1,0 +1,10 @@
+struct Person {
+  let age;
+  let name;
+};
+
+let john = Person { 15, "John Smith" };
+
+print john.age;
+print john.name;
+

@@ -1,5 +1,5 @@
 from random import randint
-from math import sin, cos, tan, sinh, cosh, tanh ,ceil, floor, sqrt, degrees, radians
+from math import sin, cos, tan, asin, acos, atan, sinh, cosh, tanh ,ceil, floor, sqrt, degrees, radians, log
 from os.path import exists, dirname, join
 from os import getenv
 from o_lexer import OLexer
@@ -29,6 +29,9 @@ def standard_library():
         'sin': lambda val : sin(val),
         'cos': lambda val : cos(val),
         'tan': lambda val : tan(val),
+        'asin': lambda val : asin(val),
+        'acos': lambda val : acos(val),
+        'atan': lambda val : atan(val),
         'sinh': lambda val : sinh(val),
         'cosh': lambda val : cosh(val),
         'tanh': lambda val : tanh(val),
@@ -38,7 +41,8 @@ def standard_library():
         'sqrt': lambda val : sqrt(val),
         'pow': lambda base, exponent : pow(base, exponent),
         'deg': lambda val : degrees(val),
-        'rad': lambda val : radians(val)
+        'rad': lambda val : radians(val),
+        'log': lambda val : log(val)
     })
     return env
 
@@ -94,6 +98,37 @@ class Process:
                 result = self.evaluate(parsed[1])
                 print(self.stringify(result))
                 return None
+            elif action == 'struct':
+                name = parsed[1]
+                if name in self.env:
+                    print('Cannot redefine variable \'%s\'' % name)
+                    return None
+
+                fields = parsed[2]
+
+                self.env.update({ name: { "__fields__": fields } })
+            elif action == 'init_struct':
+                name = parsed[1]
+                struct_definition = self.env.find(name)
+                if struct_definition is None:
+                    print('Struct %s is undefined' % name)
+                    return None
+
+                fields = struct_definition['__fields__']
+                values = [self.evaluate(value) for value in parsed[2]]
+
+                struct = {}
+
+                for i in range(len(fields)):
+                    if i < len(values):
+                        struct.update({ fields[i]: values[i] })
+                    else:
+                        struct.update({ fields[i]: None })
+
+                print(struct)
+                return struct
+
+                
             elif action == 'import':
                 base_dir = getenv('OPATH')
                 if base_dir is None:
