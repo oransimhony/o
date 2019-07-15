@@ -143,9 +143,13 @@ class OParser(Parser):
     def var_define(self, p):
         return ('var_define', p.var, p.expr)
 
-    @_('LET var SEP')
+    @_('LET var ":" var_type SEP')
     def statement(self, p):
-        return ('var_define', p.var, None)
+        return ('var_define_no_expr', p.var, p.var_type)
+
+    @_('TYPEOF expr')
+    def expr(self, p):
+        return ('typeof', p.expr)
 
     @_('var_assign SEP')
     def statement(self, p):

@@ -10,7 +10,7 @@ class OLexer(Lexer):
               MINUSASGN, STARASGN, SLASHASGN, MODULOASGN,
               ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN,
               IMPORT, STRUCT, INT_TYPE, FLOAT_TYPE, BOOL_TYPE,
-              LIST_TYPE, DICT_TYPE, STRING_TYPE}
+              LIST_TYPE, DICT_TYPE, STRING_TYPE, TYPEOF}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -67,6 +67,7 @@ class OLexer(Lexer):
     ID['bool'] = BOOL_TYPE
     ID['list'] = LIST_TYPE
     ID['dict'] = DICT_TYPE
+    ID['typeof'] = TYPEOF
 
     @_(r'\d+\.\d+')
     def FLOAT(self, t):

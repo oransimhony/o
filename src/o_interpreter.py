@@ -10,7 +10,6 @@ def standard_library():
     env.update({
         'input': lambda prompt: input(prompt),
         'random': lambda max: randint(0, max),
-        'typeof': lambda val: type(val),
         'is_float': lambda val: isinstance(val, float),
         'is_int': lambda val: isinstance(val, int),
         'is_string': lambda val: isinstance(val, str),
@@ -112,6 +111,8 @@ class Process:
             return "true"
         elif expr is False:
             return "false"
+        elif expr in self.rtypes:
+            return self.rtypes[expr]
         return str(expr)
 
     def evaluate(self, parsed):
@@ -126,6 +127,18 @@ class Process:
                 result = self.evaluate(parsed[1])
                 print(self.stringify(result))
                 return None
+            elif action == 'typeof':
+                try:
+                    if len(parsed[1]) == 2:
+                        var = self.env.find(parsed[1][1])
+                        return var.type
+                    elif len(parsed[1]) == 3:
+                        var = self.env.find(parsed[1][1][1])
+                        index = self.evaluate(parsed[1][2])
+                        print(var, index)
+                        return self.rtypes[type(var.value[index])]
+                except TypeError as e:
+                    return self.rtypes[type(parsed[1])]
             elif action == 'struct':
                 name = parsed[1]
                 if name in self.env:
@@ -182,7 +195,7 @@ class Process:
                         self.depth += 1
                         res = func(*args)
                         self.depth -= 1
-                        return res
+                        return 
                     else:
                         raise ValueError('\'%s\' not a function' % parsed[1])
 
@@ -207,7 +220,13 @@ class Process:
                 if name in self.env:
                     raise NameError('Cannot redefine variable \'%s\'' % name)
                 result = self.evaluate(parsed[2])
-                self.env.update({name: result})
+                self.env.update({name: Value(result, type(result))})
+                return None
+            elif action == 'var_define_no_expr':
+                name = parsed[1]
+                if name in self.env:
+                    raise NameError('Cannot redefine variable \'%s\'' % name)
+                self.env.update({name: Value(None, self.types[parsed[2]])})
                 return None
             elif action == 'var_assign':
                 if type(parsed[1]) is not tuple:
@@ -215,7 +234,12 @@ class Process:
                         raise UnboundLocalError('Cannot assign to undefined variable \'%s\'' %
                               parsed[1])
                     result = self.evaluate(parsed[2])
-                    self.env.update({parsed[1]: result})
+                    var = self.env.find(parsed[1])
+                    if type(result) != var.type:
+                        raise ValueError("Type of variable '{}' should be '{}' but instead got '{}'".format(parsed[1], self.rtypes[var.type], self.rtypes[type(result)]))
+
+                    # self.env.update({parsed[1]: result})
+                    var.value = result
                     return None
                 else:
                     var = self.evaluate(parsed[1][1])
@@ -238,7 +262,8 @@ class Process:
             elif action == 'block':
                 return self.run(parsed[1])
             elif action == 'var':
-                return self.env.find(parsed[1])
+                var = self.env.find(parsed[1])
+                return var.value
             elif action == 'indexing':
                 var = self.evaluate(parsed[1])
                 index = self.evaluate(parsed[2])
@@ -336,7 +361,10 @@ class Process:
                 return self.evaluate(parsed[3])
             elif action == '.':
                 var = self.env.find(parsed[1])
-                res = self.evaluate(var[parsed[2]])
+                if isinstance(var, Value):
+                    res = self.evaluate(var.value[parsed[2]])
+                else:
+                    res = self.evaluate(var[parsed[2]])
                 return res
 
             else:
@@ -383,3 +411,12 @@ class Function(object):
 
     def __call__(self, *args):
         return self.process.run(self.body, Env(self.params, args, self.env))
+
+class Value(object):
+    def __init__(self, value, val_type):
+        self.value = value
+        self.type = val_type
+
+
+    def __str__(self):
+        return "{}: {}".format(self.value, self.type)
