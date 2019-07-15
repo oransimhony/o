@@ -10,7 +10,8 @@ class OLexer(Lexer):
               MINUSASGN, STARASGN, SLASHASGN, MODULOASGN,
               ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN,
               IMPORT, STRUCT, INT_TYPE, FLOAT_TYPE, BOOL_TYPE,
-              LIST_TYPE, DICT_TYPE, STRING_TYPE, TYPEOF}
+              LIST_TYPE, DICT_TYPE, STRING_TYPE, TYPEOF,
+              LEFTARROW}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -35,13 +36,14 @@ class OLexer(Lexer):
     ARROW = r'=>'
     LESSEQ = r'<='
     GREATEREQ = r'>='
+    LEFTARROW = r'<-'
+    SHR = r'>>'
+    SHL = r'<<'
     LESS = r'<'
     GREATER = r'>'
     NOTEQ = r'!='
     EQEQ = r'=='
     ASSIGN = r'='
-    SHR = r'>>'
-    SHL = r'<<'
     SEP = r';'
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'

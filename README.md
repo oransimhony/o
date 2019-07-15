@@ -1,6 +1,6 @@
 # O
 
-An interpreted dynamically typed programming language made in Python with SLY
+An interpreted type-inferred programming language made in Python with SLY
 
 ## Getting Started
 

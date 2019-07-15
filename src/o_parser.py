@@ -119,12 +119,8 @@ class OParser(Parser):
     def function_declaration(self, p):
         return ('fn', p.ID, ('params', p.params), ('block', p.block))
 
-    @_('init_struct')
+    @_('ID LEFTARROW "{" struct_init_exprs "}" ')
     def expr(self, p):
-        return p.init_struct
-
-    @_('ID "{" struct_init_exprs "}" ')
-    def init_struct(self, p):
         return ('init_struct', p.ID, p.struct_init_exprs)
 
     @_('expr')

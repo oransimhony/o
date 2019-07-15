@@ -3,7 +3,7 @@ struct Person {
   let name: string;
 };
 
-let john = Person { 15, "John Smith" };
+let john = Person <- { 15, "John Smith" };
 
 print john.age;
 print john.name;

@@ -1,4 +1,4 @@
-import string;
+import str;
 import test;
 
 printHello();

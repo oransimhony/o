@@ -1,5 +1,5 @@
 let won = false;
-let guess;
+let guess: int;
 
 print "Welcome to the guessing game!";
 print "In this game you need to guess a number between 1 and 100";

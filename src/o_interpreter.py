@@ -195,7 +195,7 @@ class Process:
                         self.depth += 1
                         res = func(*args)
                         self.depth -= 1
-                        return 
+                        return res
                     else:
                         raise ValueError('\'%s\' not a function' % parsed[1])
 
@@ -263,6 +263,8 @@ class Process:
                 return self.run(parsed[1])
             elif action == 'var':
                 var = self.env.find(parsed[1])
+                if not isinstance(var, Value):
+                    return var
                 return var.value
             elif action == 'indexing':
                 var = self.evaluate(parsed[1])
@@ -417,6 +419,8 @@ class Value(object):
         self.value = value
         self.type = val_type
 
+    def __len__(self):
+        return len(self.value)
 
     def __str__(self):
         return "{}: {}".format(self.value, self.type)
