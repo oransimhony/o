@@ -79,9 +79,33 @@ class OParser(Parser):
     def struct_fields(self, p):
         return p.struct_fields + p.struct_field
 
-    @_('LET ID SEP')
+    @_('LET ID ":" var_type SEP')
     def struct_field(self, p):
-        return [p.ID]
+        return [(p.ID, p.var_type)]
+
+    @_('INT_TYPE')
+    def var_type(self, p):
+        return 'int'
+
+    @_('FLOAT_TYPE')
+    def var_type(self, p):
+        return 'float'
+
+    @_('STRING_TYPE')
+    def var_type(self, p):
+        return 'string'
+
+    @_('BOOL_TYPE')
+    def var_type(self, p):
+        return 'bool'
+
+    @_('LIST_TYPE')
+    def var_type(self, p):
+        return 'list'
+
+    @_('DICT_TYPE')
+    def var_type(self, p):
+        return 'dict'
 
     @_('IMPORT ID SEP')
     def import_statement(self, p):

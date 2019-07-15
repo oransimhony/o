@@ -34,7 +34,7 @@ pip install sly
 * Mathemtical Experssions ( + - * / % )
 * Logical operations
 * Bitwise operations
-* Variables (Ints, Floats, Strings, Booleans, Lists, Dictionaries)
+* Variables (Ints, Floats, Strings, Booleans, Lists, Dictionaries, Structs)
 * If Statements
 * While Loops
 * For Loops

@@ -9,7 +9,8 @@ class OLexer(Lexer):
               AND, OR, SHR, SHL, INC, DEC, PLUSASGN,
               MINUSASGN, STARASGN, SLASHASGN, MODULOASGN,
               ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN,
-              IMPORT, STRUCT}
+              IMPORT, STRUCT, INT_TYPE, FLOAT_TYPE, BOOL_TYPE,
+              LIST_TYPE, DICT_TYPE, STRING_TYPE}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -60,6 +61,12 @@ class OLexer(Lexer):
     ID['or'] = OR
     ID['import'] = IMPORT
     ID['struct'] = STRUCT
+    ID['int'] = INT_TYPE
+    ID['float'] = FLOAT_TYPE
+    ID['string'] = STRING_TYPE
+    ID['bool'] = BOOL_TYPE
+    ID['list'] = LIST_TYPE
+    ID['dict'] = DICT_TYPE
 
     @_(r'\d+\.\d+')
     def FLOAT(self, t):

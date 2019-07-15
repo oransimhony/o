@@ -58,6 +58,8 @@ class Process:
         self.env = Env(outer=env)
         self.should_return = False
         self.depth = 0
+        self.types  =  { 'int': int, 'float': float, 'string': str, 'bool': bool, 'list': list, 'dict': dict }
+        self.rtypes = { int: 'int', float: 'float', str: 'string', bool: 'bool', list: 'list', dict: 'dict' }
 
     def run(self, tree=None, env={}):
         current_env = self.env
@@ -66,12 +68,38 @@ class Process:
             self.env = env
         if tree is None:
             for line in self.tree:
-                result = self.evaluate(line)
+                try:
+                    result = self.evaluate(line)
+                except ValueError as e:
+                    print(e)
+                    break
+                except UnboundLocalError as e:
+                    print(e)
+                    break
+                except NameError as e:
+                    print(e)
+                    break
+                except IndexError as e:
+                    print(e)
+                    break
                 if self.should_return:
                     return result
         else:
             for line in tree:
-                result = self.evaluate(line)
+                try:
+                    result = self.evaluate(line)
+                except ValueError as e:
+                    print(e)
+                    break
+                except UnboundLocalError as e:
+                    print(e)
+                    break
+                except NameError as e:
+                    print(e)
+                    break
+                except IndexError as e:
+                    print(e)
+                    break
                 if self.should_return:
                     return result
         self.env = current_env
@@ -101,7 +129,7 @@ class Process:
             elif action == 'struct':
                 name = parsed[1]
                 if name in self.env:
-                    print('Cannot redefine variable \'%s\'' % name)
+                    raise NameError('Cannot redefine variable \'%s\'' % name)
                     return None
 
                 fields = parsed[2]
@@ -111,7 +139,7 @@ class Process:
                 name = parsed[1]
                 struct_definition = self.env.find(name)
                 if struct_definition is None:
-                    print('Struct %s is undefined' % name)
+                    raise UnboundLocalError('Struct %s is undefined' % name)
                     return None
 
                 fields = struct_definition['__fields__']
@@ -121,11 +149,13 @@ class Process:
 
                 for i in range(len(fields)):
                     if i < len(values):
-                        struct.update({ fields[i]: values[i] })
+                        if type(values[i]) != self.types[fields[i][1]]:
+                            # print("Type for field {} should be {} but instead got {}".format(fields[i][0], fields[i][1], self.rtypes[type(values[i])]))
+                            raise ValueError("Type for field '{}' should be '{}' but instead got '{}'".format(fields[i][0], fields[i][1], self.rtypes[type(values[i])]))
+                        struct.update({ fields[i][0]: values[i] })
                     else:
-                        struct.update({ fields[i]: None })
+                        struct.update({ fields[i][0]: None })
 
-                print(struct)
                 return struct
 
                 
@@ -154,8 +184,7 @@ class Process:
                         self.depth -= 1
                         return res
                     else:
-                        print('\'%s\' not a function' % parsed[1])
-                        return
+                        raise ValueError('\'%s\' not a function' % parsed[1])
 
                 args = [self.evaluate(arg) for arg in parsed[2][1]]
                 self.depth += 1
@@ -176,17 +205,15 @@ class Process:
             elif action == 'var_define':
                 name = parsed[1]
                 if name in self.env:
-                    print('Cannot redefine variable \'%s\'' % name)
-                    return None
+                    raise NameError('Cannot redefine variable \'%s\'' % name)
                 result = self.evaluate(parsed[2])
                 self.env.update({name: result})
                 return None
             elif action == 'var_assign':
                 if type(parsed[1]) is not tuple:
                     if parsed[1] not in self.env:
-                        print('Cannot assign to undefined variable \'%s\'' %
+                        raise UnboundLocalError('Cannot assign to undefined variable \'%s\'' %
                               parsed[1])
-                        return None
                     result = self.evaluate(parsed[2])
                     self.env.update({parsed[1]: result})
                     return None
@@ -216,10 +243,10 @@ class Process:
                 var = self.evaluate(parsed[1])
                 index = self.evaluate(parsed[2])
                 if index > len(var):
-                    print('Index out of bounds error')
+                    raise IndexError('Index out of bounds error')
                     return None
                 elif type(index) != int:
-                    print('List indices must be integers')
+                    raise IndexError('List indices must be integers')
                     return None
                 return var[index]
             elif action == '+':
@@ -347,8 +374,7 @@ class Env(dict):
         elif self.outer is not None:
             return self.outer.find(name)
 
-        print("{} is undefined".format(name))
-        return None
+        raise UnboundLocalError("{} is undefined".format(name))
 
 
 class Function(object):
