@@ -23,17 +23,21 @@ class OParser(Parser):
         ('right', '!'),
     )
 
-    @_('program statement')
+    @_('statements')
     def program(self, p):
-        return p.program + (p.statement, )
-
-    @_('statement')
-    def program(self, p):
-        return (p.statement, )
+        return p.statements
 
     @_('empty')
     def program(self, p):
         return ()
+
+    @_('statement')
+    def statements(self, p):
+        return (p.statement, )
+
+    @_('statements statement')
+    def statements(self, p):
+        return p.statements + (p.statement, )
 
     @_('import_statement')
     def statement(self, p):
