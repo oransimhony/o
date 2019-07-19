@@ -11,7 +11,7 @@ class OLexer(Lexer):
               ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN,
               IMPORT, STRUCT, INT_TYPE, FLOAT_TYPE, BOOL_TYPE,
               LIST_TYPE, DICT_TYPE, STRING_TYPE, TYPEOF,
-              LEFTARROW}
+              LEFTARROW, PIPE}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -23,6 +23,7 @@ class OLexer(Lexer):
 
     INC = r'\+\+'
     DEC = r'--'
+    PIPE = r'\|>'
     PLUSASGN = r'\+='
     MINUSASGN = r'-='
     STARASGN = r'\*='

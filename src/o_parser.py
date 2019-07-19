@@ -231,6 +231,10 @@ class OParser(Parser):
     def expr(self, p):
         return ('call', p.ID, ('args', p.args))
 
+    @_('expr PIPE ID "(" args ")"')
+    def expr(self, p):
+        return ('call', p.ID, ('args', [p.expr] + p.args))
+
     @_('expr EQEQ expr')
     def expr(self, p):
         return ('==', p.expr0, p.expr1)
