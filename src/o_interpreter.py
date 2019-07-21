@@ -125,6 +125,7 @@ class Process:
 
             if action == 'print':
                 result = self.evaluate(parsed[1])
+                print(parsed, result)
                 print(self.stringify(result))
                 return None
             elif action == 'typeof':
@@ -135,7 +136,6 @@ class Process:
                     elif len(parsed[1]) == 3:
                         var = self.env.find(parsed[1][1][1])
                         index = self.evaluate(parsed[1][2])
-                        print(var, index)
                         return self.rtypes[type(var.value[index])]
                 except TypeError as e:
                     return self.rtypes[type(parsed[1])]
@@ -203,6 +203,7 @@ class Process:
                 self.depth += 1
                 res = func(*args)
                 self.depth -= 1
+                print("DEBUG: ", func, args, func(*args))
                 return res
 
             elif action == 'lambda':

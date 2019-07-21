@@ -51,3 +51,17 @@ fn startswith(str, start) {
   }
   return res;
 }
+
+fn endswith(str, end) {
+  if len(end) > len(str) return false;
+  let i: int;
+  let res = true;
+  let strLen = len(str);
+  let endLen = len(end);
+  for i = 0; i < len(end); ++i {
+    if str[strLen - i - 1] != end[endLen - i - 1] {
+      res = false;
+    }
+  }
+  return res;
+}

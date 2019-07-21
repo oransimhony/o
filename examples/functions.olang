@@ -26,3 +26,9 @@ fn closureAdd(x) {
 
 let f = closureAdd(1);
 print f(2);
+
+fn printInput(input) {
+  print input;
+}
+
+factorial(10) |> printInput();
