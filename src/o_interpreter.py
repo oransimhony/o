@@ -125,7 +125,6 @@ class Process:
 
             if action == 'print':
                 result = self.evaluate(parsed[1])
-                print(parsed, result)
                 print(self.stringify(result))
                 return None
             elif action == 'typeof':
