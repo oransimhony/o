@@ -11,7 +11,7 @@ class OLexer(Lexer):
               ANDASGN, ORASGN, XORASGN, SHLASGN, SHRASGN,
               IMPORT, STRUCT, INT_TYPE, FLOAT_TYPE, BOOL_TYPE,
               LIST_TYPE, DICT_TYPE, STRING_TYPE, TYPEOF,
-              LEFTARROW, PIPE}
+              LEFTARROW, PIPE, CLASS, DOUBLECOLON}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
 
@@ -46,6 +46,7 @@ class OLexer(Lexer):
     EQEQ = r'=='
     ASSIGN = r'='
     SEP = r';'
+    DOUBLECOLON = r'::'
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
     ID['let'] = LET
@@ -71,6 +72,7 @@ class OLexer(Lexer):
     ID['list'] = LIST_TYPE
     ID['dict'] = DICT_TYPE
     ID['typeof'] = TYPEOF
+    ID['class'] = CLASS
 
     @_(r'\d+\.\d+')
     def FLOAT(self, t):

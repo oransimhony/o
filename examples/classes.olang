@@ -1,0 +1,16 @@
+class Greeter {
+  fn hello() {
+    print "Hello From Greeter Class!";
+  }
+
+  fn goodbye() {
+    print "Goodbye From Greeter Class...";
+  }
+}
+
+let greeter1 = Greeter();
+let greeter2 = Greeter();
+
+greeter1::hello();
+
+greeter2::goodbye();

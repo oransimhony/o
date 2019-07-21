@@ -127,6 +127,28 @@ class Process:
                 result = self.evaluate(parsed[1])
                 print(self.stringify(result))
                 return None
+            elif action == 'class_func_call':
+                instance = self.env.find(parsed[1]).value
+                method = instance.find_method(parsed[2])
+                args = [self.evaluate(arg) for arg in parsed[3][1]]
+                self.depth += 1
+                res = method(*args)
+                self.depth -= 1
+                return res
+            elif action == 'class':
+                name = parsed[1]
+                if name in self.env:
+                    raise NameError('Cannot redefine variable \'%s\'' % name)
+                    return None
+
+                class_process = Process((), env=Env(self.env))
+
+                for function in parsed[2][1]:
+                    class_process.evaluate(function)
+
+                # print(class_process.env)
+
+                self.env.update({ name: OClass(name, class_process.env) })
             elif action == 'typeof':
                 try:
                     if len(parsed[1]) == 2:
@@ -188,7 +210,9 @@ class Process:
                 return None
             elif action == 'call':
                 func = self.env.find(parsed[1])
-                if not isinstance(func, Function):
+                if isinstance(func, OClass):
+                    return func()
+                elif not isinstance(func, Function):
                     if type(func) == type(lambda x: x):
                         args = [self.evaluate(arg) for arg in parsed[2][1]]
                         self.depth += 1
@@ -424,3 +448,24 @@ class Value(object):
 
     def __str__(self):
         return "{}: {}".format(self.value, self.type)
+
+class OClass(object):
+    def __init__(self, name, env):
+        self.name = name
+        self.env = env
+
+    def __str__(self):
+        return "<{} class>".format(self.name)
+
+    def __call__(self):
+        return OInstance(self)
+
+class OInstance(object):
+    def __init__(self, oclass):
+        self.oclass = oclass
+
+    def __str__(self):
+        return "<{} instance>".format(self.oclass.name)
+
+    def find_method(self, name):
+        return self.oclass.env.find(name)

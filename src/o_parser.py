@@ -43,9 +43,9 @@ class OParser(Parser):
     def statement(self, p):
         return p.import_statement
 
-    @_('function_declaration')
+    @_('function_definition')
     def statement(self, p):
-        return p.function_declaration
+        return p.function_definition
 
     @_('return_statement')
     def statement(self, p):
@@ -70,6 +70,26 @@ class OParser(Parser):
     @_('struct_definition')
     def statement(self, p):
         return p.struct_definition
+
+    @_('class_definition')
+    def statement(self, p):
+        return p.class_definition
+
+    @_('CLASS ID "{" function_definitions "}"')
+    def class_definition(self, p):
+        return ('class', p.ID, ('functions', p.function_definitions))
+
+    @_('empty')
+    def function_definitions(self, p):
+        return []
+
+    @_('function_definition')
+    def function_definitions(self, p):
+        return [p.function_definition]
+
+    @_('function_definitions function_definition')
+    def function_definitions(self, p):
+        return p.function_definitions + [p.function_definition]
 
     @_('STRUCT ID "{" struct_fields "}" SEP')
     def struct_definition(self, p):
@@ -120,7 +140,7 @@ class OParser(Parser):
         return p.var_define
 
     @_('FN ID "(" params ")" block')
-    def function_declaration(self, p):
+    def function_definition(self, p):
         return ('fn', p.ID, ('params', p.params), ('block', p.block))
 
     @_('ID LEFTARROW "{" struct_init_exprs "}" ')
@@ -230,6 +250,10 @@ class OParser(Parser):
     @_('ID "(" args ")"')
     def expr(self, p):
         return ('call', p.ID, ('args', p.args))
+
+    @_('ID DOUBLECOLON ID "(" args ")"')
+    def expr(self, p):
+        return ('class_func_call', p.ID0, p.ID1, ('args', p.args))
 
     @_('expr PIPE ID "(" args ")"')
     def expr(self, p):
