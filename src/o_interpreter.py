@@ -228,7 +228,6 @@ class Process:
                 self.depth += 1
                 res = func(*args)
                 self.depth -= 1
-                print("DEBUG: ", func, args, func(*args))
                 return res
 
             elif action == 'lambda':

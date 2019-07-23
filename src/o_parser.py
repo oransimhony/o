@@ -162,6 +162,10 @@ class OParser(Parser):
     @_('LET var ASSIGN expr')
     def var_define(self, p):
         return ('var_define', p.var, p.expr)
+        
+    @_('LET getter ASSIGN expr')
+    def var_define(self, p):
+        return ('var_define', p.getter, p.expr)
 
     @_('LET var ":" var_type SEP')
     def statement(self, p):
