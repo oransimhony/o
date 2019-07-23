@@ -105,7 +105,9 @@ class Process:
         return result
 
     def stringify(self, expr):
-        if expr is None:
+        if type(expr) == dict:
+            return str(expr)
+        elif expr is None:
             return "nil"
         elif expr is True:
             return "true"
@@ -386,7 +388,10 @@ class Process:
                     return self.evaluate(parsed[2])
                 return self.evaluate(parsed[3])
             elif action == '.':
-                var = self.env.find(parsed[1])
+                if type(parsed[1]) == tuple:
+                    var = self.evaluate(parsed[1])
+                else:
+                    var = self.env.find(parsed[1])
                 if isinstance(var, Value):
                     res = self.evaluate(var.value[parsed[2]])
                 else:

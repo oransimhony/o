@@ -487,6 +487,14 @@ class OParser(Parser):
     def member(self, p):
         return { p.STRING : p.expr }
 
-    @_('ID "." ID')
+    @_('getter "." ID')
+    def getter(self, p):
+        return ('.', p.getter, p.ID)
+
+    @_('ID')
+    def getter(self, p):
+        return p.ID
+
+    @_('getter')
     def expr(self, p):
-        return ('.', p.ID0, p.ID1)
+        return p.getter

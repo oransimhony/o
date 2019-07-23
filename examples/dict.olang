@@ -2,3 +2,7 @@ let a = { "test": 1, "foo": "bar" };
 
 print a.test;
 print a.foo;
+
+let nested = { "nestedDict": a };
+
+print nested.nestedDict.foo;
