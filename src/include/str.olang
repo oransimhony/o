@@ -1,5 +1,4 @@
-fn is_alpha(s) {
-  if typeof s != typeof "" return false;
+fn is_alpha(s: string) {
   let i: int;
   let ch: string;
   let res = true;
@@ -12,8 +11,7 @@ fn is_alpha(s) {
   return res;
 }
 
-fn is_numeric(s) {
-  if typeof s != typeof "" return false;
+fn is_numeric(s: string) {
   let i: int;
   let ch: string;
   let res = true;
@@ -26,8 +24,7 @@ fn is_numeric(s) {
   return res;
 }
 
-fn is_alphanumeric(s) {
-  if typeof s != typeof "" return false;
+fn is_alphanumeric(s: string) {
   let i: int;
   let ch: string;
   let res = true;
@@ -40,7 +37,7 @@ fn is_alphanumeric(s) {
   return res;
 }
 
-fn startswith(str, start) {
+fn startswith(str: string, start: string) {
   if len(start) > len(str) return false;
   let i: int;
   let res = true;
@@ -52,7 +49,7 @@ fn startswith(str, start) {
   return res;
 }
 
-fn endswith(str, end) {
+fn endswith(str: string, end: string) {
   if len(end) > len(str) return false;
   let i: int;
   let res = true;

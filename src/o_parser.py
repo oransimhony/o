@@ -451,9 +451,9 @@ class OParser(Parser):
     def params(self, p):
         return []
 
-    @_('ID')
+    @_('ID ":" var_type')
     def param(self, p):
-        return p.ID
+        return (p.ID, p.var_type)
 
     @_('args "," arg')
     def args(self, p):

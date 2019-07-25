@@ -2,11 +2,11 @@ fn printHello() {
   print "Hello";
 }
 
-fn addTwoNumbers(a, b) {
+fn addTwoNumbers(a: int, b: int) {
   return a + b;
 }
 
-fn avg(lst) {
+fn avg(lst: list) {
   let i: int;
   let sum = 0;
 

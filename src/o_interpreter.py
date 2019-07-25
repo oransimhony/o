@@ -81,6 +81,11 @@ class Process:
                 except IndexError as e:
                     print(e)
                     break
+                except TypeError as e:
+                    print(e)
+                    break
+                if self.depth == 0:
+                    self.should_return = False
                 if self.should_return:
                     return result
         else:
@@ -99,6 +104,11 @@ class Process:
                 except IndexError as e:
                     print(e)
                     break
+                except TypeError as e:
+                    print(e)
+                    break
+                if self.depth == 0:
+                    self.should_return = False
                 if self.should_return:
                     return result
         self.env = current_env
@@ -212,6 +222,9 @@ class Process:
                 return None
             elif action == 'call':
                 func = self.env.find(parsed[1])
+                if isinstance(func, Value):
+                    func = func.get()
+
                 if isinstance(func, OClass):
                     return func()
                 elif not isinstance(func, Function):
@@ -440,7 +453,12 @@ class Function(object):
         self.process, self.params, self.body, self.env = process, params, body, env
 
     def __call__(self, *args):
-        return self.process.run(self.body, Env(self.params, args, self.env))
+        params = []
+        for i in range(len(self.params)):
+            if type(args[i]) != self.process.types[self.params[i][1]]:
+                raise TypeError("Type of parameter {} should be {} but got {}.".format(self.params[i][0], self.params[i][1], self.process.rtypes[type(args[i])]))
+            params.append(self.params[i][0])
+        return self.process.run(self.body, Env(params, args, self.env))
 
 class Value(object):
     def __init__(self, value, val_type):
@@ -452,6 +470,9 @@ class Value(object):
 
     def __str__(self):
         return "{}: {}".format(self.value, self.type)
+
+    def get(self):
+        return self.value
 
 class OClass(object):
     def __init__(self, name, env):
