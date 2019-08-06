@@ -18,10 +18,16 @@ def repl():
             break
         if text:
             tokens = lexer.tokenize(text)
-            
-            tree = parser.parse(tokens)
-            program.tree = tree
-            program.run()
+
+            try:
+                tree = parser.parse(tokens)
+                program.tree = tree
+                program.run()
+            except TypeError as e:
+                if str(e).startswith("'NoneType' object is not iterable"):
+                    print("Syntax Error")
+                else:
+                    print(e)
 
 
 def exec_file():
@@ -29,10 +35,10 @@ def exec_file():
     parser = OParser()
     with open(sys.argv[1]) as opened_file:
         tokens = lexer.tokenize(opened_file.read())
-        
+
         # for token in tokens:
         #     print(token)
-        
+
         tree = parser.parse(tokens)
         # print(tree)
 
