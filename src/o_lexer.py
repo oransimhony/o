@@ -2,6 +2,9 @@ from sly import Lexer
 
 
 class OLexer(Lexer):
+    """
+    O language Lexer
+    """
     tokens = {ID, INT, FLOAT, ASSIGN, STRING, LET,
               PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS,
               GREATER, LESSEQ, GREATEREQ, NIL, WHILE,
@@ -76,16 +79,25 @@ class OLexer(Lexer):
 
     @_(r'\d+\.\d+')
     def FLOAT(self, t):
+        """
+        Parsing float numbers
+        """
         t.value = float(t.value)
         return t
 
     @_(r'\d+')
     def INT(self, t):
+        """
+        Parsing integers
+        """
         t.value = int(t.value)
         return t
 
     @_(r'\".*?(?<!\\)(\\\\)*\"')
     def STRING(self, t):
+        """
+        Parsing strings (including escape characters)
+        """
         t.value = t.value[1:-1]
         t.value = t.value.replace(r"\n", "\n")
         t.value = t.value.replace(r"\t", "\t")
