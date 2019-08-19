@@ -1,4 +1,8 @@
 class Greeter {
+  fn init() {
+    print "Initializing greeter...";
+  }
+
   fn hello() {
     print "Hello From Greeter Class!";
   }

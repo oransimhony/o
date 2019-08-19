@@ -488,6 +488,9 @@ class OClass(object):
 class OInstance(object):
     def __init__(self, oclass):
         self.oclass = oclass
+        init_method = self.oclass.env.get('init')
+        if init_method is not None:
+            init_method()
 
     def __str__(self):
         return "<{} instance>".format(self.oclass.name)
