@@ -3,7 +3,9 @@ from o_lexer import OLexer
 
 
 class OParser(Parser):
-    # debugfile = 'parser.out'
+    """
+    Parser for the O Language
+    """
     tokens = OLexer.tokens
 
     precedence = (

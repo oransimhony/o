@@ -6,6 +6,9 @@ from o_lexer import OLexer
 from o_parser import OParser
 
 def standard_library():
+    """
+    Function that generates a dictionary that contains all the basic functions
+    """
     env = Env()
     env.update({
         'input': lambda prompt: input(prompt),
@@ -47,6 +50,9 @@ def standard_library():
 
 
 class Process:
+    """
+    The main process the executes O Abstract Syntax Tree
+    """
     def __init__(self, tree, filename="?", env={}):
         self.tree = tree
         self.file_path = filename
@@ -115,6 +121,9 @@ class Process:
         return result
 
     def stringify(self, expr):
+        """
+        Preparing values for printing
+        """
         if type(expr) == dict:
             return str(expr)
         elif expr is None:
@@ -128,13 +137,13 @@ class Process:
         return str(expr)
 
     def evaluate(self, parsed):
-        # print("PARSED:", parsed)
+        """
+        Evaluating a parsed tree/tuple/expression
+        """
         if type(parsed) != tuple:
-            # print("DIFFERENT TYPE: ", parsed)
             return parsed
         else:
             action = parsed[0]
-
             if action == 'print':
                 result = self.evaluate(parsed[1])
                 print(self.stringify(result))
@@ -187,24 +196,19 @@ class Process:
                 if struct_definition is None:
                     raise UnboundLocalError('Struct %s is undefined' % name)
                     return None
-
                 fields = struct_definition['__fields__']
                 values = [self.evaluate(value) for value in parsed[2]]
 
                 struct = {}
-
                 for i in range(len(fields)):
                     if i < len(values):
                         if type(values[i]) != self.types[fields[i][1]]:
-                            # print("Type for field {} should be {} but instead got {}".format(fields[i][0], fields[i][1], self.rtypes[type(values[i])]))
                             raise ValueError("Type for field '{}' should be '{}' but instead got '{}'".format(fields[i][0], fields[i][1], self.rtypes[type(values[i])]))
                         struct.update({ fields[i][0]: values[i] })
                     else:
                         struct.update({ fields[i][0]: None })
 
                 return struct
-
-                
             elif action == 'import':
                 base_dir = getenv('OPATH')
                 if base_dir is None:
@@ -420,21 +424,16 @@ class Process:
     def import_contents(self, file_contents):
         lexer = OLexer()
         parser = OParser()
-
         tokens = lexer.tokenize(file_contents)
-
-        # for token in tokens:
-        #     print(token)
-        
         tree = parser.parse(tokens)
-        # print(tree)
-
         program = Process(tree)
         program.run()
         self.env.update(program.env)
 
-
 class Env(dict):
+    """
+    Environment Class
+    """
     def __init__(self, params=(), args=(), outer=None):
         self.update(zip(params, args))
         self.outer = outer
@@ -449,6 +448,9 @@ class Env(dict):
 
 
 class Function(object):
+    """
+    Function object for O Functions and annoymous functions (lambdas)
+    """
     def __init__(self, process, params, body, env):
         self.process, self.params, self.body, self.env = process, params, body, env
 
@@ -461,6 +463,9 @@ class Function(object):
         return self.process.run(self.body, Env(params, args, self.env))
 
 class Value(object):
+    """
+    Class container for values inside the O Language
+    """
     def __init__(self, value, val_type):
         self.value = value
         self.type = val_type
@@ -475,6 +480,9 @@ class Value(object):
         return self.value
 
 class OClass(object):
+    """
+    Object for classes in O
+    """
     def __init__(self, name, env):
         self.name = name
         self.env = env
@@ -486,6 +494,9 @@ class OClass(object):
         return OInstance(self)
 
 class OInstance(object):
+    """
+    Object for instances of a class in O
+    """
     def __init__(self, oclass):
         self.oclass = oclass
         init_method = self.oclass.env.get('init')
