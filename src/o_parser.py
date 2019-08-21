@@ -133,9 +133,9 @@ class OParser(Parser):
     def var_type(self, p):
         return 'dict'
 
-    @_('IMPORT ID SEP')
+    @_('IMPORT STRING SEP')
     def import_statement(self, p):
-        return ('import', p.ID)
+        return ('import', p.STRING)
 
     @_('var_define SEP')
     def statement(self, p):

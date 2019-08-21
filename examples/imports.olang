@@ -1,5 +1,5 @@
-import str;
-import test;
+import "str";
+import "test";
 
 printHello();
 
