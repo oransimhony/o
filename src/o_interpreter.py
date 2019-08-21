@@ -453,6 +453,7 @@ class Function(object):
     """
     def __init__(self, process, params, body, env):
         self.process, self.params, self.body, self.env = process, params, body, env
+        self.type = 'function'
 
     def __call__(self, *args):
         params = []
@@ -486,6 +487,7 @@ class OClass(object):
     def __init__(self, name, env):
         self.name = name
         self.env = env
+        self.type = 'class'
 
     def __str__(self):
         return "<{} class>".format(self.name)
@@ -499,6 +501,7 @@ class OInstance(object):
     """
     def __init__(self, oclass):
         self.oclass = oclass
+        self.type = 'instance'
         init_method = self.oclass.env.get('init')
         if init_method is not None:
             init_method()
