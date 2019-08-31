@@ -44,7 +44,11 @@ def standard_library():
         'pow': lambda base, exponent : pow(base, exponent),
         'deg': lambda val : degrees(val),
         'rad': lambda val : radians(val),
-        'log': lambda val : log(val)
+        'log': lambda val : log(val),
+        'exit': lambda val : exit(val),
+        'trim': lambda val : val.strip(),
+        'split': lambda val, delimeter=" " : val.split(delimeter),
+        'print': lambda val : print(val),
     })
     return env
 
@@ -144,11 +148,7 @@ class Process:
             return parsed
         else:
             action = parsed[0]
-            if action == 'print':
-                result = self.evaluate(parsed[1])
-                print(self.stringify(result))
-                return None
-            elif action == 'class_func_call':
+            if action == 'class_func_call':
                 instance = self.env.find(parsed[1]).value
                 method = instance.find_method(parsed[2])
                 args = [self.evaluate(arg) for arg in parsed[3][1]]

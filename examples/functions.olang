@@ -9,13 +9,13 @@ fn factorial(n: int) {
   return n * factorial(n - 1);
 }
 
-print add(1, 2);
+print(add(1, 2));
 
-print factorial(10);
+print(factorial(10));
 
 let add3 = lambda (n: int) => add(n, 3);
 
-print add3(15);
+print(add3(15));
 
 fn closureAdd(x: int) {
   fn innerAdd(y: int) {
@@ -25,4 +25,4 @@ fn closureAdd(x: int) {
 }
 
 let f = closureAdd(1);
-print f(2);
+print(f(2));

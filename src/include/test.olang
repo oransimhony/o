@@ -1,5 +1,5 @@
 fn printHello() {
-  print "Hello";
+  print("Hello");
 }
 
 fn addTwoNumbers(a: int, b: int) {

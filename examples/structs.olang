@@ -5,5 +5,5 @@ struct Person {
 
 let john = Person <- { 15, "John Smith" };
 
-print john.age;
-print john.name;
+print(john.age);
+print(john.name);

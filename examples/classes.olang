@@ -1,14 +1,14 @@
 class Greeter {
   fn init() {
-    print "Initializing greeter...";
+    print("Initializing greeter...");
   }
 
   fn hello() {
-    print "Hello From Greeter Class!";
+    print("Hello From Greeter Class!");
   }
 
   fn goodbye() {
-    print "Goodbye From Greeter Class...";
+    print("Goodbye From Greeter Class...");
   }
 }
 

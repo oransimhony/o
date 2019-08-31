@@ -6,7 +6,7 @@ class OLexer(Lexer):
     O language Lexer
     """
     tokens = {ID, INT, FLOAT, ASSIGN, STRING, LET,
-              PRINT, IF, ELSE, EQEQ, SEP, NOTEQ, LESS,
+              IF, ELSE, EQEQ, SEP, NOTEQ, LESS,
               GREATER, LESSEQ, GREATEREQ, NIL, WHILE,
               FOR, FN, RETURN, LAMBDA, ARROW, TRUE, FALSE,
               AND, OR, SHR, SHL, INC, DEC, PLUSASGN,
@@ -53,7 +53,6 @@ class OLexer(Lexer):
 
     ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
     ID['let'] = LET
-    ID['print'] = PRINT
     ID['if'] = IF
     ID['else'] = ELSE
     ID['nil'] = NIL

@@ -11,4 +11,4 @@ if a * 2 == 2 {
   a = 30;
 }
 
-print a;
+print(a);

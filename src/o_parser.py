@@ -53,10 +53,6 @@ class OParser(Parser):
     def statement(self, p):
         return p.return_statement
 
-    @_('print_statement')
-    def statement(self, p):
-        return p.print_statement
-
     @_('while_statement')
     def statement(self, p):
         return p.while_statement
@@ -228,11 +224,7 @@ class OParser(Parser):
     @_('var SHRASGN expr')
     def var_assign(self, p):
         return ('var_assign', p.var, ('>>', ('var', p.var), p.expr))
-
-    @_('PRINT expr SEP')
-    def print_statement(self, p):
-        return ('print', p.expr)
-
+        
     @_('IF expr block ELSE block')
     def if_statement(self, p):
         return ('if', ('condition', p.expr), ('block', p.block0), ('block', p.block1))

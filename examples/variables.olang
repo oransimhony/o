@@ -1,20 +1,20 @@
 let a = 5;
 let b = a + 2.5;
-print a;
-print b;
-print a * b;
+print(a);
+print(b);
+print(a * b);
 let str = "Hello";
 str = str + " World!";
-print "Mr. \nNewline";
-print str;
+print("Mr. \nNewline");
+print(str);
 let my_list = [0, 1, 2];
-print my_list[0];
-print my_list[1];
-print my_list[2];
+print(my_list[0]);
+print(my_list[1]);
+print(my_list[2]);
 my_list[0] = my_list[0] + my_list[1] + my_list[2];
-print my_list[0];
+print(my_list[0]);
 
 let v = true ? "yes" : "false";
-print v;
+print(v);
 
-print typeof 1;
+print(typeof 1);
